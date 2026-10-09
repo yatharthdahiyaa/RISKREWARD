@@ -1,0 +1,893 @@
+{
+  "metadata": {
+    "pipeline_version": "2.0_joblib",
+    "team": "Aavishkar Hacks",
+    "generated_by": "train_and_export_models.py",
+    "models_exported": [
+      "models/ordinal_salary_model.joblib",
+      "models/jds_hike_logistic.joblib",
+      "models/sds_rf_leakage_audit.joblib",
+      "models/sds_logit_ocean.joblib"
+    ]
+  },
+  "model1_ordinal_salary": {
+    "description": "Proportional Odds Ordinal Logistic Regression on 6 Salary Tiers (N=15,841)",
+    "n_observations": 15841,
+    "coefficients": {
+      "flag_big_data": {
+        "coefficient": 0.2926816775706023,
+        "std_error": 0.06328842774452727,
+        "p_value": 3.7537878516003503e-06,
+        "odds_ratio": 1.3400161653319342,
+        "ci_lower": 1.183689622800447,
+        "ci_upper": 1.516988312445163
+      },
+      "flag_maths_stats": {
+        "coefficient": 0.624449076430218,
+        "std_error": 0.05352719463494148,
+        "p_value": 1.901212039262626e-31,
+        "odds_ratio": 1.8672169801700622,
+        "ci_lower": 1.6812469915364843,
+        "ci_upper": 2.07375791218464
+      },
+      "flag_core_coding": {
+        "coefficient": 0.34392913376914436,
+        "std_error": 0.03716057777553896,
+        "p_value": 2.1379985539955428e-20,
+        "odds_ratio": 1.4104786766583497,
+        "ci_lower": 1.3113988623370028,
+        "ci_upper": 1.5170442452287576
+      },
+      "flag_ai_ml": {
+        "coefficient": 0.6395312765175949,
+        "std_error": 0.06838332053925329,
+        "p_value": 8.588142109858235e-21,
+        "odds_ratio": 1.8955921624803824,
+        "ci_lower": 1.657814167760865,
+        "ci_upper": 2.1674743263355745
+      },
+      "flag_storytelling_dashboards": {
+        "coefficient": 0.15115529778761033,
+        "std_error": 0.035522719855004534,
+        "p_value": 2.0888798383541235e-05,
+        "odds_ratio": 1.163177282914774,
+        "ci_lower": 1.0849465974833756,
+        "ci_upper": 1.2470488359771343
+      },
+      "exp_mid": {
+        "coefficient": 0.48335466924768566,
+        "std_error": 0.005599636084885899,
+        "p_value": 0.0,
+        "odds_ratio": 1.6215049009626994,
+        "ci_lower": 1.60380572418174,
+        "ci_upper": 1.639399401188388
+      },
+      "metro_bengaluru": {
+        "coefficient": 0.464117361675904,
+        "std_error": 0.03531138237518683,
+        "p_value": 1.8529339040231055e-39,
+        "odds_ratio": 1.5906096360987292,
+        "ci_lower": 1.484246227118313,
+        "ci_upper": 1.7045952135328932
+      },
+      "metro_mumbai": {
+        "coefficient": 0.5460131968419605,
+        "std_error": 0.04036100586287479,
+        "p_value": 1.0655037196319704e-41,
+        "odds_ratio": 1.7263566356558702,
+        "ci_lower": 1.595050863947698,
+        "ci_upper": 1.868471596007223
+      },
+      "metro_delhi_ncr": {
+        "coefficient": 0.5402577048391691,
+        "std_error": 0.03636168479313725,
+        "p_value": 6.184773218741692e-50,
+        "odds_ratio": 1.7164491424437247,
+        "ci_lower": 1.5983771010580057,
+        "ci_upper": 1.8432431599812313
+      }
+    },
+    "predicted_salary_distribution": [
+      {
+        "band": "0to3 LPA",
+        "mean_predicted_prob": 0.1611
+      },
+      {
+        "band": "3to6 LPA",
+        "mean_predicted_prob": 0.1515
+      },
+      {
+        "band": "6to10 LPA",
+        "mean_predicted_prob": 0.1901
+      },
+      {
+        "band": "10to15 LPA",
+        "mean_predicted_prob": 0.2202
+      },
+      {
+        "band": "15to25 LPA",
+        "mean_predicted_prob": 0.1944
+      },
+      {
+        "band": "25to50 LPA",
+        "mean_predicted_prob": 0.0827
+      }
+    ]
+  },
+  "model2_jds_hike": {
+    "description": "JDS Junior Hike Logistic + 2,000 BCa Bootstrap (N=137)",
+    "n_observations": 137,
+    "bootstrap_draws": 2000,
+    "successful_draws": 2000,
+    "skill_odds_ratios": {
+      "big_data_skills": {
+        "coefficient": 1.0042506260637947,
+        "odds_ratio": 2.7298608195946654,
+        "bca_ci_lower": 1.51840813407781,
+        "bca_ci_upper": 8.63597658610516,
+        "p_value": 0.006349524414483211,
+        "rank1_bootstrap_pct": 0.5,
+        "sign_stability_pct": 100.0
+      },
+      "maths-stats_skills": {
+        "coefficient": 1.7190657179894302,
+        "odds_ratio": 5.579313376355127,
+        "bca_ci_lower": 2.6839390627528923,
+        "bca_ci_upper": 21.61975522584396,
+        "p_value": 0.00029713716335928714,
+        "rank1_bootstrap_pct": 60.9,
+        "sign_stability_pct": 100.0
+      },
+      "coding_skills": {
+        "coefficient": 0.6238995619501718,
+        "odds_ratio": 1.8661911992686127,
+        "bca_ci_lower": 0.9399665966020722,
+        "bca_ci_upper": 4.724120130754659,
+        "p_value": 0.06453454211673246,
+        "rank1_bootstrap_pct": 0.4,
+        "sign_stability_pct": 96.2
+      },
+      "ai_and_ml_skills": {
+        "coefficient": 1.2953142873805719,
+        "odds_ratio": 3.652143616437762,
+        "bca_ci_lower": 1.327361603981962,
+        "bca_ci_upper": 13.873964639900386,
+        "p_value": 0.005660616590125454,
+        "rank1_bootstrap_pct": 21.6,
+        "sign_stability_pct": 99.6
+      },
+      "dashboard_and_storytelling_skills": {
+        "coefficient": 1.2546706580466018,
+        "odds_ratio": 3.506683286220101,
+        "bca_ci_lower": 1.7937167311629572,
+        "bca_ci_upper": 17.46409922536341,
+        "p_value": 0.0003225295861411935,
+        "rank1_bootstrap_pct": 16.8,
+        "sign_stability_pct": 100.0
+      }
+    },
+    "interaction_coding_x_storytelling": {
+      "coefficient": 0.42465137141212067,
+      "odds_ratio": 1.5290572536591935,
+      "p_value": 0.2915834102229372
+    },
+    "model_metrics": {
+      "train_auc": 0.9108518835616438,
+      "train_accuracy": 0.8467153284671532,
+      "cv_5fold_auc_mean": 0.908,
+      "cv_5fold_auc_std": 0.0206,
+      "confusion_matrix": [
+        [
+          52,
+          12
+        ],
+        [
+          9,
+          64
+        ]
+      ]
+    },
+    "roc_curve_points": [
+      {
+        "fpr": 0.0,
+        "tpr": 0.0
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 0.0137
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 0.0411
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 0.0685
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 0.0822
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 0.1096
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 0.1644
+      },
+      {
+        "fpr": 0.0156,
+        "tpr": 0.1781
+      },
+      {
+        "fpr": 0.0156,
+        "tpr": 0.1918
+      },
+      {
+        "fpr": 0.0312,
+        "tpr": 0.1918
+      },
+      {
+        "fpr": 0.0312,
+        "tpr": 0.2329
+      },
+      {
+        "fpr": 0.0312,
+        "tpr": 0.2877
+      },
+      {
+        "fpr": 0.0312,
+        "tpr": 0.3151
+      },
+      {
+        "fpr": 0.0312,
+        "tpr": 0.3425
+      },
+      {
+        "fpr": 0.0312,
+        "tpr": 0.3562
+      },
+      {
+        "fpr": 0.0312,
+        "tpr": 0.3836
+      },
+      {
+        "fpr": 0.0312,
+        "tpr": 0.4247
+      },
+      {
+        "fpr": 0.0469,
+        "tpr": 0.4247
+      },
+      {
+        "fpr": 0.0469,
+        "tpr": 0.4384
+      },
+      {
+        "fpr": 0.0625,
+        "tpr": 0.4521
+      },
+      {
+        "fpr": 0.0625,
+        "tpr": 0.4932
+      },
+      {
+        "fpr": 0.0781,
+        "tpr": 0.5205
+      },
+      {
+        "fpr": 0.0781,
+        "tpr": 0.589
+      },
+      {
+        "fpr": 0.0781,
+        "tpr": 0.6164
+      },
+      {
+        "fpr": 0.0781,
+        "tpr": 0.6438
+      },
+      {
+        "fpr": 0.0938,
+        "tpr": 0.6575
+      },
+      {
+        "fpr": 0.0938,
+        "tpr": 0.7123
+      },
+      {
+        "fpr": 0.0938,
+        "tpr": 0.7397
+      },
+      {
+        "fpr": 0.0938,
+        "tpr": 0.7671
+      },
+      {
+        "fpr": 0.0938,
+        "tpr": 0.7945
+      },
+      {
+        "fpr": 0.0938,
+        "tpr": 0.8082
+      },
+      {
+        "fpr": 0.1094,
+        "tpr": 0.8219
+      },
+      {
+        "fpr": 0.1094,
+        "tpr": 0.8356
+      },
+      {
+        "fpr": 0.125,
+        "tpr": 0.8356
+      },
+      {
+        "fpr": 0.125,
+        "tpr": 0.8493
+      },
+      {
+        "fpr": 0.1562,
+        "tpr": 0.8767
+      },
+      {
+        "fpr": 0.1875,
+        "tpr": 0.8767
+      },
+      {
+        "fpr": 0.1875,
+        "tpr": 0.8904
+      },
+      {
+        "fpr": 0.2031,
+        "tpr": 0.9041
+      },
+      {
+        "fpr": 0.2031,
+        "tpr": 0.9178
+      },
+      {
+        "fpr": 0.2188,
+        "tpr": 0.9315
+      },
+      {
+        "fpr": 0.2969,
+        "tpr": 0.9315
+      },
+      {
+        "fpr": 0.2969,
+        "tpr": 0.9452
+      },
+      {
+        "fpr": 0.3438,
+        "tpr": 0.9452
+      },
+      {
+        "fpr": 0.3438,
+        "tpr": 0.9589
+      },
+      {
+        "fpr": 0.3594,
+        "tpr": 0.9589
+      },
+      {
+        "fpr": 0.3906,
+        "tpr": 0.9589
+      },
+      {
+        "fpr": 0.4531,
+        "tpr": 0.9589
+      },
+      {
+        "fpr": 0.4844,
+        "tpr": 0.9589
+      },
+      {
+        "fpr": 0.5156,
+        "tpr": 0.9589
+      },
+      {
+        "fpr": 0.5469,
+        "tpr": 0.9863
+      },
+      {
+        "fpr": 0.5781,
+        "tpr": 0.9863
+      },
+      {
+        "fpr": 0.5938,
+        "tpr": 1.0
+      },
+      {
+        "fpr": 0.6094,
+        "tpr": 1.0
+      },
+      {
+        "fpr": 0.6406,
+        "tpr": 1.0
+      },
+      {
+        "fpr": 0.8281,
+        "tpr": 1.0
+      },
+      {
+        "fpr": 0.8594,
+        "tpr": 1.0
+      },
+      {
+        "fpr": 0.9688,
+        "tpr": 1.0
+      },
+      {
+        "fpr": 1.0,
+        "tpr": 1.0
+      }
+    ],
+    "sample_predictions": [
+      {
+        "emp_id": 2136,
+        "scores": {
+          "big_data": 3.5,
+          "maths_stats": 4.5,
+          "coding": 4.6,
+          "ai_ml": 4.4,
+          "dashboards": 4.6
+        },
+        "predicted_high_hike_prob": 0.5226,
+        "predicted_label": 1,
+        "actual_label": 1,
+        "correct": true
+      },
+      {
+        "emp_id": 2292,
+        "scores": {
+          "big_data": 3.7,
+          "maths_stats": 4.8,
+          "coding": 4.6,
+          "ai_ml": 5.0,
+          "dashboards": 3.3
+        },
+        "predicted_high_hike_prob": 0.4843,
+        "predicted_label": 0,
+        "actual_label": 0,
+        "correct": true
+      },
+      {
+        "emp_id": 2931,
+        "scores": {
+          "big_data": 2.3,
+          "maths_stats": 2.3,
+          "coding": 2.6,
+          "ai_ml": 3.3,
+          "dashboards": 3.0
+        },
+        "predicted_high_hike_prob": 0.0001,
+        "predicted_label": 0,
+        "actual_label": 0,
+        "correct": true
+      },
+      {
+        "emp_id": 2946,
+        "scores": {
+          "big_data": 2.8,
+          "maths_stats": 5.0,
+          "coding": 2.5,
+          "ai_ml": 5.0,
+          "dashboards": 3.3
+        },
+        "predicted_high_hike_prob": 0.1294,
+        "predicted_label": 0,
+        "actual_label": 0,
+        "correct": true
+      },
+      {
+        "emp_id": 3287,
+        "scores": {
+          "big_data": 3.0,
+          "maths_stats": 5.0,
+          "coding": 5.0,
+          "ai_ml": 5.0,
+          "dashboards": 5.0
+        },
+        "predicted_high_hike_prob": 0.8746,
+        "predicted_label": 1,
+        "actual_label": 0,
+        "correct": false
+      },
+      {
+        "emp_id": 3482,
+        "scores": {
+          "big_data": 3.8,
+          "maths_stats": 4.4,
+          "coding": 3.4,
+          "ai_ml": 3.0,
+          "dashboards": 4.8
+        },
+        "predicted_high_hike_prob": 0.1138,
+        "predicted_label": 0,
+        "actual_label": 0,
+        "correct": true
+      },
+      {
+        "emp_id": 3497,
+        "scores": {
+          "big_data": 4.1,
+          "maths_stats": 3.8,
+          "coding": 5.0,
+          "ai_ml": 4.2,
+          "dashboards": 5.0
+        },
+        "predicted_high_hike_prob": 0.4981,
+        "predicted_label": 0,
+        "actual_label": 1,
+        "correct": false
+      },
+      {
+        "emp_id": 3742,
+        "scores": {
+          "big_data": 4.1,
+          "maths_stats": 3.8,
+          "coding": 4.4,
+          "ai_ml": 4.2,
+          "dashboards": 5.0
+        },
+        "predicted_high_hike_prob": 0.4061,
+        "predicted_label": 0,
+        "actual_label": 0,
+        "correct": true
+      },
+      {
+        "emp_id": 3788,
+        "scores": {
+          "big_data": 4.4,
+          "maths_stats": 4.0,
+          "coding": 4.1,
+          "ai_ml": 4.9,
+          "dashboards": 2.9
+        },
+        "predicted_high_hike_prob": 0.1608,
+        "predicted_label": 0,
+        "actual_label": 0,
+        "correct": true
+      },
+      {
+        "emp_id": 3923,
+        "scores": {
+          "big_data": 4.3,
+          "maths_stats": 2.3,
+          "coding": 3.0,
+          "ai_ml": 3.5,
+          "dashboards": 5.0
+        },
+        "predicted_high_hike_prob": 0.0116,
+        "predicted_label": 0,
+        "actual_label": 0,
+        "correct": true
+      }
+    ]
+  },
+  "model3_sds_leakage": {
+    "description": "SDS Senior Big Five OCEAN Leakage Audit (N=152)",
+    "n_observations": 152,
+    "random_forest": {
+      "auc": 1.0,
+      "accuracy": 1.0,
+      "feature_importances": {
+        "neuroticism": 0.0361,
+        "extraversion": 0.1411,
+        "openness_to_experience": 0.3155,
+        "agreeableness": 0.1531,
+        "conscientiousness": 0.3542
+      },
+      "leakage_detected": true
+    },
+    "logistic_ocean": {
+      "auc": 0.9690126050420167,
+      "accuracy": 0.9078947368421053,
+      "odds_ratios": {
+        "neuroticism": {
+          "coefficient": 0.07310007308668191,
+          "odds_ratio": 1.075838193976668,
+          "p_value": 0.022596401807307803
+        },
+        "extraversion": {
+          "coefficient": 0.06356940085842087,
+          "odds_ratio": 1.0656334391106619,
+          "p_value": 0.08627428068989657
+        },
+        "openness_to_experience": {
+          "coefficient": 0.21451132097872058,
+          "odds_ratio": 1.2392561504875836,
+          "p_value": 4.693199123524997e-06
+        },
+        "agreeableness": {
+          "coefficient": 0.04932908445990557,
+          "odds_ratio": 1.0505660188108088,
+          "p_value": 0.1860025878328645
+        },
+        "conscientiousness": {
+          "coefficient": 0.21039941333086956,
+          "odds_ratio": 1.2341709058379469,
+          "p_value": 2.6010588798811465e-05
+        }
+      }
+    },
+    "simple_sum_cutoff": {
+      "best_cutoff": 211,
+      "accuracy": 0.9013157894736842
+    },
+    "trait_means_by_group": {
+      "neuroticism": {
+        "high_success_mean": 36.04,
+        "low_success_mean": 36.62,
+        "difference": -0.58
+      },
+      "extraversion": {
+        "high_success_mean": 48.29,
+        "low_success_mean": 37.5,
+        "difference": 10.79
+      },
+      "openness_to_experience": {
+        "high_success_mean": 47.98,
+        "low_success_mean": 32.99,
+        "difference": 14.98
+      },
+      "agreeableness": {
+        "high_success_mean": 47.39,
+        "low_success_mean": 41.1,
+        "difference": 6.3
+      },
+      "conscientiousness": {
+        "high_success_mean": 53.33,
+        "low_success_mean": 34.9,
+        "difference": 18.43
+      }
+    },
+    "roc_curve_points": [
+      {
+        "fpr": 0.0,
+        "tpr": 0.0
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 0.0119
+      },
+      {
+        "fpr": 0.0,
+        "tpr": 0.3333
+      },
+      {
+        "fpr": 0.0147,
+        "tpr": 0.3333
+      },
+      {
+        "fpr": 0.0147,
+        "tpr": 0.5476
+      },
+      {
+        "fpr": 0.0294,
+        "tpr": 0.5476
+      },
+      {
+        "fpr": 0.0294,
+        "tpr": 0.7262
+      },
+      {
+        "fpr": 0.0441,
+        "tpr": 0.7262
+      },
+      {
+        "fpr": 0.0441,
+        "tpr": 0.8214
+      },
+      {
+        "fpr": 0.0588,
+        "tpr": 0.8214
+      },
+      {
+        "fpr": 0.0588,
+        "tpr": 0.8452
+      },
+      {
+        "fpr": 0.0735,
+        "tpr": 0.8452
+      },
+      {
+        "fpr": 0.0735,
+        "tpr": 0.9286
+      },
+      {
+        "fpr": 0.1176,
+        "tpr": 0.9286
+      },
+      {
+        "fpr": 0.1176,
+        "tpr": 0.9405
+      },
+      {
+        "fpr": 0.1324,
+        "tpr": 0.9405
+      },
+      {
+        "fpr": 0.1324,
+        "tpr": 0.9643
+      },
+      {
+        "fpr": 0.1471,
+        "tpr": 0.9643
+      },
+      {
+        "fpr": 0.1471,
+        "tpr": 0.9881
+      },
+      {
+        "fpr": 0.2353,
+        "tpr": 0.9881
+      },
+      {
+        "fpr": 0.2353,
+        "tpr": 1.0
+      },
+      {
+        "fpr": 1.0,
+        "tpr": 1.0
+      }
+    ]
+  },
+  "persona_predictions": {
+    "asha": {
+      "scores": {
+        "big_data_skills": 3.2,
+        "maths-stats_skills": 3.0,
+        "coding_skills": 4.6,
+        "ai_and_ml_skills": 4.2,
+        "dashboard_and_storytelling_skills": 3.0
+      },
+      "high_hike_probability": 0.0071,
+      "predicted_high_hike": false,
+      "model_confidence": 0.9929
+    },
+    "rohan": {
+      "scores": {
+        "big_data_skills": 3.6,
+        "maths-stats_skills": 3.8,
+        "coding_skills": 4.2,
+        "ai_and_ml_skills": 4.9,
+        "dashboard_and_storytelling_skills": 2.8
+      },
+      "high_hike_probability": 0.056,
+      "predicted_high_hike": false,
+      "model_confidence": 0.944
+    },
+    "meera": {
+      "scores": {
+        "big_data_skills": 4.6,
+        "maths-stats_skills": 4.9,
+        "coding_skills": 4.9,
+        "ai_and_ml_skills": 4.9,
+        "dashboard_and_storytelling_skills": 4.8
+      },
+      "high_hike_probability": 0.9474,
+      "predicted_high_hike": true,
+      "model_confidence": 0.9474
+    },
+    "kabir": {
+      "scores": {
+        "big_data_skills": 3.5,
+        "maths-stats_skills": 3.5,
+        "coding_skills": 1.5,
+        "ai_and_ml_skills": 3.5,
+        "dashboard_and_storytelling_skills": 3.5
+      },
+      "high_hike_probability": 0.0025,
+      "predicted_high_hike": false,
+      "model_confidence": 0.9975
+    },
+    "vikram": {
+      "scores": {
+        "big_data_skills": 4.2,
+        "maths-stats_skills": 4.0,
+        "coding_skills": 4.5,
+        "ai_and_ml_skills": 4.1,
+        "dashboard_and_storytelling_skills": 3.2
+      },
+      "high_hike_probability": 0.0964,
+      "predicted_high_hike": false,
+      "model_confidence": 0.9036
+    }
+  },
+  "tri_axial_summary": [
+    {
+      "Skill_Area": "Big Data",
+      "Listed_Count": 970,
+      "Listed_Share_Pct": 6.123350798560697,
+      "Paid_Odds_Ratio": 1.3400161653319342,
+      "Paid_CI_Lower": 1.183689622800447,
+      "Paid_CI_Upper": 1.516988312445163,
+      "Rewarded_Odds_Ratio": 2.729860819594665,
+      "Rewarded_CI_Lower": 1.51840813407781,
+      "Rewarded_CI_Upper": 8.635976586105176,
+      "Rank_Listed": 4,
+      "Rank_Paid": 4,
+      "Rank_Rewarded": 4,
+      "Discordance_Delta": 0,
+      "Z_Listed": -0.8379669353266007,
+      "Z_Paid": -0.594100965951004,
+      "Z_Rewarded": -0.5345302519070102
+    },
+    {
+      "Skill_Area": "Maths-Stats",
+      "Listed_Count": 1571,
+      "Listed_Share_Pct": 9.91730320055552,
+      "Paid_Odds_Ratio": 1.8672169801700624,
+      "Paid_CI_Lower": 1.6812469915364845,
+      "Paid_CI_Upper": 2.07375791218464,
+      "Rewarded_Odds_Ratio": 5.579313376355118,
+      "Rewarded_CI_Lower": 2.6839390627528923,
+      "Rewarded_CI_Upper": 21.619755225844123,
+      "Rank_Listed": 3,
+      "Rank_Paid": 2,
+      "Rank_Rewarded": 1,
+      "Discordance_Delta": 2,
+      "Z_Listed": -0.4044113842493906,
+      "Z_Paid": 1.0098030278761718,
+      "Z_Rewarded": 1.532179116646369
+    },
+    {
+      "Skill_Area": "Core Coding",
+      "Listed_Count": 3511,
+      "Listed_Share_Pct": 22.164004797676917,
+      "Paid_Odds_Ratio": 1.4104786766583497,
+      "Paid_CI_Lower": 1.3113988623370028,
+      "Paid_CI_Upper": 1.5170442452287576,
+      "Rewarded_Odds_Ratio": 1.866191199268614,
+      "Rewarded_CI_Lower": 0.939966596602072,
+      "Rewarded_CI_Upper": 4.72412013075466,
+      "Rank_Listed": 2,
+      "Rank_Paid": 3,
+      "Rank_Rewarded": 5,
+      "Discordance_Delta": 3,
+      "Z_Listed": 0.9950857357003388,
+      "Z_Paid": -0.3797327401237534,
+      "Z_Rewarded": -1.1609502607005964
+    },
+    {
+      "Skill_Area": "AI & ML",
+      "Listed_Count": 878,
+      "Listed_Share_Pct": 5.542579382614734,
+      "Paid_Odds_Ratio": 1.8955921624803824,
+      "Paid_CI_Lower": 1.657814167760865,
+      "Paid_CI_Upper": 2.1674743263355745,
+      "Rewarded_Odds_Ratio": 3.6521436164377623,
+      "Rewarded_CI_Lower": 1.3273616039819618,
+      "Rewarded_CI_Upper": 13.873964639900386,
+      "Rank_Listed": 5,
+      "Rank_Paid": 1,
+      "Rank_Rewarded": 2,
+      "Discordance_Delta": 5,
+      "Z_Listed": -0.9043348399840104,
+      "Z_Paid": 1.0961288964108602,
+      "Z_Rewarded": 0.1344019232116661
+    },
+    {
+      "Skill_Area": "Storytelling & Dashboards",
+      "Listed_Count": 3728,
+      "Listed_Share_Pct": 23.533867811375544,
+      "Paid_Odds_Ratio": 1.163177282914774,
+      "Paid_CI_Lower": 1.0849465974833756,
+      "Paid_CI_Upper": 1.2470488359771343,
+      "Rewarded_Odds_Ratio": 3.5066832862201,
+      "Rewarded_CI_Lower": 1.793716731162957,
+      "Rewarded_CI_Upper": 17.464099225363455,
+      "Rank_Listed": 1,
+      "Rank_Paid": 5,
+      "Rank_Rewarded": 3,
+      "Discordance_Delta": 6,
+      "Z_Listed": 1.1516274238596642,
+      "Z_Paid": -1.1320982182122783,
+      "Z_Rewarded": 0.0288994727495702
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+    "sample_sizes": {
+        "datascience_jobs_rows": 1602,
+        "total_vacancies_sum": 93005,
+        "hiring_concentration_hhi": 212.81014813758566,
+        "analytics_jobs_rows": 15841,
+        "jds_clean_rows": 137,
+        "sds_clean_rows": 152,
+        "jds_sds_id_overlap": 0
+    },
+    "tri_axial_alignment": [
+        {
+            "Skill_Area": "Big Data",
+            "Listed_Count": 970,
+            "Listed_Share_Pct": 6.123350798560697,
+            "Paid_Odds_Ratio": 1.3400161653319342,
+            "Paid_CI_Lower": 1.183689622800447,
+            "Paid_CI_Upper": 1.516988312445163,
+            "Rewarded_Odds_Ratio": 2.729860819594665,
+            "Rewarded_CI_Lower": 1.51840813407781,
+            "Rewarded_CI_Upper": 8.635976586105176,
+            "Rank_Listed": 4,
+            "Rank_Paid": 4,
+            "Rank_Rewarded": 4,
+            "Discordance_Delta": 0,
+            "Z_Listed": -0.8379669353266007,
+            "Z_Paid": -0.594100965951004,
+            "Z_Rewarded": -0.5345302519070102
+        },
+        {
+            "Skill_Area": "Maths-Stats",
+            "Listed_Count": 1571,
+            "Listed_Share_Pct": 9.917303200555521,
+            "Paid_Odds_Ratio": 1.8672169801700622,
+            "Paid_CI_Lower": 1.6812469915364843,
+            "Paid_CI_Upper": 2.07375791218464,
+            "Rewarded_Odds_Ratio": 5.579313376355118,
+            "Rewarded_CI_Lower": 2.6839390627528923,
+            "Rewarded_CI_Upper": 21.619755225844123,
+            "Rank_Listed": 3,
+            "Rank_Paid": 2,
+            "Rank_Rewarded": 1,
+            "Discordance_Delta": 2,
+            "Z_Listed": -0.4044113842493906,
+            "Z_Paid": 1.0098030278761718,
+            "Z_Rewarded": 1.532179116646369
+        },
+        {
+            "Skill_Area": "Core Coding",
+            "Listed_Count": 3511,
+            "Listed_Share_Pct": 22.164004797676913,
+            "Paid_Odds_Ratio": 1.4104786766583497,
+            "Paid_CI_Lower": 1.3113988623370028,
+            "Paid_CI_Upper": 1.5170442452287576,
+            "Rewarded_Odds_Ratio": 1.866191199268614,
+            "Rewarded_CI_Lower": 0.939966596602072,
+            "Rewarded_CI_Upper": 4.72412013075466,
+            "Rank_Listed": 2,
+            "Rank_Paid": 3,
+            "Rank_Rewarded": 5,
+            "Discordance_Delta": 3,
+            "Z_Listed": 0.9950857357003388,
+            "Z_Paid": -0.37973274012375346,
+            "Z_Rewarded": -1.1609502607005964
+        },
+        {
+            "Skill_Area": "AI & ML",
+            "Listed_Count": 878,
+            "Listed_Share_Pct": 5.542579382614734,
+            "Paid_Odds_Ratio": 1.8955921624803824,
+            "Paid_CI_Lower": 1.657814167760865,
+            "Paid_CI_Upper": 2.1674743263355745,
+            "Rewarded_Odds_Ratio": 3.6521436164377628,
+            "Rewarded_CI_Lower": 1.3273616039819618,
+            "Rewarded_CI_Upper": 13.873964639900386,
+            "Rank_Listed": 5,
+            "Rank_Paid": 1,
+            "Rank_Rewarded": 2,
+            "Discordance_Delta": 5,
+            "Z_Listed": -0.9043348399840105,
+            "Z_Paid": 1.0961288964108602,
+            "Z_Rewarded": 0.13440192321166614
+        },
+        {
+            "Skill_Area": "Storytelling & Dashboards",
+            "Listed_Count": 3728,
+            "Listed_Share_Pct": 23.533867811375544,
+            "Paid_Odds_Ratio": 1.163177282914774,
+            "Paid_CI_Lower": 1.0849465974833756,
+            "Paid_CI_Upper": 1.2470488359771343,
+            "Rewarded_Odds_Ratio": 3.5066832862201,
+            "Rewarded_CI_Lower": 1.793716731162957,
+            "Rewarded_CI_Upper": 17.464099225363455,
+            "Rank_Listed": 1,
+            "Rank_Paid": 5,
+            "Rank_Rewarded": 3,
+            "Discordance_Delta": 6,
+            "Z_Listed": 1.1516274238596642,
+            "Z_Paid": -1.1320982182122785,
+            "Z_Rewarded": 0.028899472749570256
+        }
+    ],
+    "correlations": {
+        "spearman_listed_paid": -0.7,
+        "spearman_listed_rewarded": -0.3,
+        "spearman_paid_rewarded": 0.49999999999999994,
+        "kendall_listed_paid": -0.6,
+        "kendall_listed_rewarded": -0.19999999999999998,
+        "kendall_paid_rewarded": 0.19999999999999998
+    },
+    "sds_leakage_audit": {
+        "is_leakage_detected": true,
+        "logit_auc": 0.9690126050420167,
+        "rf_auc": 1.0
+    },
+    "interaction_coding_storytelling": {
+        "coefficient": 0.42465137141212067,
+        "p_value": 0.2915834102229372
+    }
+}

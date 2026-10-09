@@ -1,0 +1,16 @@
+Regime,Skill_Area,Share_Pct,Rank
+Narrow,Big Data,2.935420743639922,3
+Narrow,Maths-Stats,0.8837825894829873,5
+Narrow,Core Coding,14.437219872482798,1
+Narrow,AI & ML,4.999684363360899,2
+Narrow,Storytelling & Dashboards,1.616059592197462,4
+Baseline,Big Data,6.123350798560697,4
+Baseline,Maths-Stats,9.917303200555521,3
+Baseline,Core Coding,22.164004797676913,2
+Baseline,AI & ML,5.542579382614734,5
+Baseline,Storytelling & Dashboards,23.533867811375544,1
+Broad,Big Data,6.123350798560697,4
+Broad,Maths-Stats,10.226627106874565,3
+Broad,Core Coding,23.249794836184584,2
+Broad,AI & ML,5.580455779306862,5
+Broad,Storytelling & Dashboards,23.69168613092608,1

@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAS Visual Analytics | Listed, Paid, Rewarded Decision Engine</title>
+    <link rel="stylesheet" href="css/sas-viya-theme.css?v=3.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Consolas&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ==========================================================================
+         SAS.COM GLOBAL TOP HEADER
+         ========================================================================== -->
+    <header class="sas-global-header">
+        <!-- Top Utility Bar -->
+        <div class="sas-top-utility">
+            <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                <span class="utility-badge">SAS Viya® for Learners 2026</span>
+                <span style="display:inline-flex; align-items:center; gap:6px;">
+                    <span class="pulse-dot"></span>
+                    CAS Server: <strong>INDIA(In-Memory Table Engine Active)</strong>
+                </span>
+                <span class="cas-latency-chip" id="cas-latency-chip" title="Live CAS Engine Roundtrip Latency">
+                    <span class="latency-dot"></span> <span id="cas-latency-val">12ms</span>
+                </span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <button id="theme-toggle-btn" class="btn-theme-toggle"
+                    title="Switch Theme (Viya Marine / Enterprise Light)" aria-label="Toggle Theme">
+                    <span class="theme-icon">🌙</span>
+                    <span class="theme-name">Viya Marine</span>
+                </button>
+                <a href="javascript:void(0)" onclick="window.print()">Print / Export ODS</a>
+                <a href="javascript:void(0)" onclick="document.querySelector('[data-tab=tab-simulator]').click()">Launch
+                    Decision Aid</a>
+                <a href="javascript:void(0)"
+                    onclick="document.querySelector('[data-tab=tab-architecture]').click()">View SAS Pipeline</a>
+                <a href="AavishkarHacks Approach Note.pdf" target="_blank"
+                    style="color:#38BDF8; font-weight:bold;">Approach Note (PDF)</a>
+            </div>
+        </div>
+
+        <!-- Main Brand Navigation Bar -->
+        <nav class="sas-main-nav">
+            <div class="brand-section">
+                <!-- Official SAS Vector Logo -->
+                <svg class="sas-logo-svg" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12.5 8C8.5 8 5.2 10.4 5.2 14.5C5.2 22.8 19.8 17.2 19.8 25.5C19.8 28.2 16.5 30 12.5 30C7.5 30 5.2 26.5 5.2 26.5L3 29.5C3 29.5 6.5 33 12.5 33C18.5 33 23 29.5 23 25.2C23 16.5 8.5 21.8 8.5 14.5C8.5 12.2 11.2 11 12.8 11C17 11 19 13.5 19 13.5L21.5 10.5C21.5 10.5 18 8 12.5 8Z"
+                        fill="#0077C8" />
+                    <path d="M38.5 8L28 33H32.5L34.8 27H44.2L46.5 33H51L40.5 8H38.5ZM36.2 23L39.5 14L42.8 23H36.2Z"
+                        fill="#0077C8" />
+                    <path
+                        d="M64.5 8C60.5 8 57.2 10.4 57.2 14.5C57.2 22.8 71.8 17.2 71.8 25.5C71.8 28.2 68.5 30 64.5 30C59.5 30 57.2 26.5 57.2 26.5L55 29.5C55 29.5 58.5 33 64.5 33C70.5 33 75 29.5 75 25.2C75 16.5 60.5 21.8 60.5 14.5C60.5 12.2 63.2 11 64.8 11C69 11 71 13.5 71 13.5L73.5 10.5C73.5 10.5 70 8 64.5 8Z"
+                        fill="#0077C8" />
+                    <text x="82" y="27" fill="#00A3E0" font-family="'Inter', sans-serif" font-size="14"
+                        font-weight="800" letter-spacing="1">VIYA</text>
+                </svg>
+                <div class="sas-portal-title">
+                    Visual Analytics Hub
+                    <div class="sas-portal-subtitle">Team Aavishkar Hacks | Sachin Punetha, Yatharth Dahiya, Jayant
+                        Kumar Bana, Shivam Rawat</div>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn-sas btn-sas-secondary" onclick="window.print()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z" />
+                    </svg>
+                    Print ODS Report
+                </button>
+                <button class="btn-sas btn-sas-accent"
+                    onclick="document.querySelector('[data-tab=tab-simulator]').click()">
+                    Skill Simulator
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ==========================================================================
+         SAS VIYA HERO BANNER & APPLICATION BREADCRUMB
+         ========================================================================== -->
+    <section class="viya-app-banner">
+        <div class="viya-breadcrumbs">
+            <span>SAS® Viya Platform</span>
+            <span>&rsaquo;</span>
+            <span>SAS® Visual Analytics 2026.1</span>
+            <span>&rsaquo;</span>
+            <span>CU Hackathon Round 2 & Round 3 Deliverable</span>
+            <span>&rsaquo;</span>
+            <span style="color:#FFFFFF; font-weight:600;">Listed, Paid, Rewarded Project</span>
+        </div>
+
+        <div class="viya-banner-content">
+            <div class="viya-title-area">
+                <h1>
+                    Listed, Paid, Rewarded: Next-Skill Decision Aid
+                    <span class="badge-tag viya">SAS VIYA REPORT</span>
+                </h1>
+                <p>
+                    An empirical tri-axial decision engine and uncertainty-aware decision aid built from four datasets
+                    across 93,005 job vacancies, ordinal salary tiers, and employee hike outcomes.
+                </p>
+            </div>
+
+            <div class="viya-meta-pills">
+                <div class="meta-pill">
+                    <span class="status-dot"></span>
+                    <span>CAS Session: Active (4 Datasets Audited)</span>
+                </div>
+                <div class="meta-pill">
+                    <span>Bootstrap B = 2,000 Draws</span>
+                </div>
+                <div class="meta-pill">
+                    <span>Firth's Penalized GLM & BCa CI</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         SAS VISUAL ANALYTICS REPORT TABS (SLIDING PILL SEGMENTED CONTROLLER)
+         ========================================================================== -->
+    <div class="report-tabs-wrapper">
+        <nav class="report-tabs-bar" id="report-tabs-bar">
+            <div class="tabs-slider-pill" id="tabs-slider-pill"></div>
+            <button class="report-tab-btn active" data-tab="tab-resume">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+                <span>Resume AI Scanner</span>
+                <span class="tab-chip pulse-chip">AI Flagship</span>
+            </button>
+            <button class="report-tab-btn" data-tab="tab-executive">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18M7 16h8M7 11h12M7 6h4" />
+                </svg>
+                <span>1. Executive Overview</span>
+            </button>
+            <button class="report-tab-btn" data-tab="tab-triaxial">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v20M2 12h20M4 4l16 16" />
+                </svg>
+                <span>2. Tri-Axial Bridge</span>
+            </button>
+            <button class="report-tab-btn" data-tab="tab-market">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+                </svg>
+                <span>3. External Market (Paid)</span>
+            </button>
+            <button class="report-tab-btn" data-tab="tab-internal">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 15l-2 5l9-13h-7l2-5l-9 13h7z" />
+                </svg>
+                <span>4. Internal Reward (Hikes)</span>
+            </button>
+            <button class="report-tab-btn" data-tab="tab-senior">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M8.5 11a4 4 0 100-8 4 4 0 000 8z" />
+                </svg>
+                <span>5. Senior Diagnostic</span>
+            </button>
+            <button class="report-tab-btn" data-tab="tab-simulator">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                </svg>
+                <span>6. Decision Simulator</span>
+            </button>
+            <button class="report-tab-btn" data-tab="tab-architecture">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="8" rx="2" />
+                    <rect x="2" y="14" width="20" height="8" rx="2" />
+                </svg>
+                <span>7. SAS Viya Architecture</span>
+            </button>
+            <button class="report-tab-btn" data-tab="tab-gallery">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <path d="M21 15l-5-5L5 21" />
+                </svg>
+                <span>8. Figures Gallery</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Global Active Candidate Synchronization HUD Dock -->
+    <div id="global-candidate-banner" class="global-candidate-hud-wrapper" style="display:none;"></div>
+
+    <!-- ==========================================================================
+         MAIN INTERACTIVE DASHBOARD CONTAINER
+         ========================================================================== -->
+    <main class="main-container">
+
+        <!-- ======================================================================
+             FLAGSHIP MVP TAB: RESUME AI SCANNER & SKILL INVESTMENT CARD
+             ====================================================================== -->
+        <div id="tab-resume" class="tab-pane active">
+
+            <!-- Section 2.2 Design Principles 4-Card Banner -->
+            <div class="principles-banner-grid">
+                <div class="principle-card p1">
+                    <div class="principle-number" style="color:#005A9C;">Design Principle 1</div>
+                    <div class="principle-title">Compare Like with Like</div>
+                    <div class="principle-desc">
+                        Every market premium is reported strictly after controlling for experience, city, and role
+                        family. Avoids confusing seniority with true skill value.
+                    </div>
+                </div>
+                <div class="principle-card p2">
+                    <div class="principle-number" style="color:#6D28D9;">Design Principle 2</div>
+                    <div class="principle-title">Show Uncertainty Everywhere</div>
+                    <div class="principle-desc">
+                        Every estimate carries intervals: 2,000 BCa bootstrap resamples, repeated 5-fold CV, and Monte
+                        Carlo draw shares. No naked point estimates.
+                    </div>
+                </div>
+                <div class="principle-card p3">
+                    <div class="principle-number" style="color:#059669;">Design Principle 3</div>
+                    <div class="principle-title">Verify Each Step First</div>
+                    <div class="principle-desc">
+                        Section 2.4 Verification Gates: data-role filter (92% precision), known-answer recovery (98%
+                        coverage), null permutation tests (p=0.002).
+                    </div>
+                </div>
+                <div class="principle-card p4">
+                    <div class="principle-number" style="color:#FF6A13;">Design Principle 4</div>
+                    <div class="principle-title">Abstain Rather than Guess</div>
+                    <div class="principle-desc">
+                        Formal Abstention Register triggers "Not Enough Evidence" whenever ratings fall below empirical
+                        bounds (&lt;2.2) or options are statistically tied.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume Input & Quick Personas Card -->
+            <div class="sas-card" style="margin-bottom:24px;">
+                <div class="sas-card-header">
+                    <div class="card-title-group">
+                        <h2>Candidate Resume Intelligence & Empirical Decision Engine</h2>
+                        <p>Drag & drop your resume file (.pdf, .docx, .txt), paste text below, or select a benchmark
+                            persona to generate your verified Skill Investment Card.</p>
+                    </div>
+                </div>
+                <div class="sas-card-body">
+                    <!-- Dedicated Animated Drag-and-Drop Ingestion Dropzone -->
+                    <div id="resume-dropzone" class="resume-dropzone-box" title="Click or drag resume file here">
+                        <input type="file" id="resume-file-input" accept=".txt,.pdf,.docx,.json" style="display:none;">
+                        <div id="dropzone-default-view">
+                            <div class="dropzone-icon">
+                                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                            </div>
+                            <div class="dropzone-title">
+                                Drag & Drop Candidate Resume here, or <span class="dropzone-browse-link">Browse
+                                    files</span>
+                            </div>
+                            <div class="dropzone-subtitle">
+                                Native PyMuPDF & python-docx parser • Supports PDF, DOCX, TXT, JSON
+                            </div>
+                        </div>
+                        <div id="dropzone-file-preview" class="dropzone-file-preview" style="display:none;">
+                            <div class="file-chip">
+                                <span class="file-type-icon" id="preview-file-icon">📄</span>
+                                <div class="file-details">
+                                    <strong id="preview-file-name">resume.pdf</strong>
+                                    <span id="preview-file-size">142 KB</span>
+                                </div>
+                                <button type="button" class="btn-remove-file" id="btn-remove-file"
+                                    title="Clear file">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Benchmark Personas Bar -->
+                    <div class="persona-quick-bar">
+                        <span style="font-size:12px; font-weight:700; color:var(--text-primary); margin-right:4px;">
+                            Quick Benchmark Profiles (Table 20):
+                        </span>
+                        <button class="persona-quick-btn" data-persona="asha"
+                            style="border-color:var(--sas-cyan-accent); background:rgba(0,163,224,0.15);">
+                            Asha (Fresher 0 yrs &rarr; Recommend Maths)
+                        </button>
+                        <button class="persona-quick-btn" data-persona="rohan">
+                            Rohan (ML Enthusiast &rarr; Maths & Dashboards)
+                        </button>
+                        <button class="persona-quick-btn" data-persona="meera">
+                            Meera (Saturated Senior Junior &rarr; No Gap)
+                        </button>
+                        <button class="persona-quick-btn" data-persona="kabir">
+                            Kabir (Sub-Baseline Coding 1.5 &rarr; Formal Abstain)
+                        </button>
+                        <button class="persona-quick-btn" data-persona="vikram">
+                            Vikram (Mid-Level Lead 4 yrs)
+                        </button>
+                    </div>
+
+                    <!-- AI Inference Engine & Google Gemini Configuration Bar -->
+                    <div class="gemini-config-bar"
+                        style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:6px; padding:10px 14px; margin-bottom:14px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:280px;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#00A3E0">
+                                    <path
+                                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                                </svg>
+                                <strong style="font-size:12px; color:var(--text-primary);">AI Inference Engine:</strong>
+                            </div>
+                            <input type="password" id="gemini-api-key-input"
+                                value=""
+                                placeholder="Enter Google AI Studio Key (AQ...) [Optional]"
+                                style="flex:1; max-width:420px; font-family:monospace; font-size:11px; padding:6px 10px; border:1px solid var(--border-color); border-radius:4px; background:var(--input-bg); color:var(--text-primary);">
+                            <button id="btn-test-gemini-key" class="btn-sas btn-sas-secondary"
+                                style="padding:5px 12px; font-size:11px; font-weight:700;">
+                                Test Connection
+                            </button>
+                        </div>
+                        <div id="gemini-status-badge"
+                            style="display:flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:#059669; background:rgba(16, 185, 129, 0.12); padding:4px 10px; border-radius:12px; border:1px solid rgba(16, 185, 129, 0.3);">
+                            <span class="status-dot"
+                                style="background:#059669; width:7px; height:7px; border-radius:50%;"></span>
+                            <span id="gemini-status-text">🟢 Google Gemini 3.5 Flash Connected (Live Cloud API)</span>
+                        </div>
+                    </div>
+
+                    <!-- Textarea for Resume -->
+                    <textarea id="resume-text-input" class="resume-input-box"
+                        placeholder="Parsed resume text will appear here, or you can paste text directly (education, experience, technical skills, projects, tools, certifications)..."></textarea>
+
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap; gap:12px;">
+                        <div style="font-size:12px; color:var(--text-muted);">
+                            ⚡ Evaluated against 15,841 job postings, 137 verified juniors, and 152 seniors with B=2,000
+                            bootstrap draws.
+                        </div>
+                        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+                            <div id="resume-analysis-status" style="display:none;"></div>
+                            <button class="btn-sas btn-sas-primary" id="btn-run-resume-analysis"
+                                style="padding:10px 24px; font-size:14px; font-weight:700;">
+                                🚀 Run Decision Engine & AI Analysis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Results Container -->
+            <div id="resume-results-container" style="display:none;"></div>
+
+        </div>
+
+        <!-- ======================================================================
+             TAB 1: EXECUTIVE OVERVIEW & MACRO LABOR MARKET
+             ====================================================================== -->
+        <div id="tab-executive" class="tab-pane">
+            <!-- Active Candidate Executive Summary Container -->
+            <div id="candidate-executive-container"></div>
+
+            <!-- Top KPI Cards -->
+            <div class="grid-cols-4">
+                <div class="kpi-card accent-cyan">
+                    <div class="kpi-label">Total Labor Postings Audited</div>
+                    <div class="kpi-value">93,005</div>
+                    <div class="kpi-subtext">Across 1,602 company vacancy aggregates</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Granular Analytics Postings</div>
+                    <div class="kpi-value">15,841</div>
+                    <div class="kpi-subtext">Evaluated across 6 ordered salary tiers</div>
+                </div>
+                <div class="kpi-card accent-purple">
+                    <div class="kpi-label">Junior Cohort Sample (JDS)</div>
+                    <div class="kpi-value">137</div>
+                    <div class="kpi-subtext">Clean unique juniors (32 ghost rows dropped)</div>
+                </div>
+                <div class="kpi-card accent-orange">
+                    <div class="kpi-label">Market HHI Concentration</div>
+                    <div class="kpi-value">212.8</div>
+                    <div class="kpi-subtext">Low concentration (highly competitive hiring)</div>
+                </div>
+            </div>
+
+            <!-- Critical Audit Law Callout -->
+            <div class="callout-box danger">
+                <div style="font-size:20px;">🛡️</div>
+                <div>
+                    <strong>CRITICAL JURY DEFENSE LAW: Cohort Intersection JDS ∩ SDS = ∅ (Zero Overlapping IDs)</strong>
+                    <div style="margin-top:2px;">
+                        Forensic ID matching revealed exactly 0 common employee identifiers between JDS Skill Traits and
+                        SDS Personality Traits. These represent independent cross-sectional cohorts, NOT a
+                        longitudinally tracked employee panel. Blind predictive modeling across both datasets without
+                        cohort isolation is scientifically invalid.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forensic Data Inventory Table -->
+            <div class="sas-card" style="margin-bottom:24px;">
+                <div class="sas-card-header">
+                    <div class="card-title-group">
+                        <h2>Forensic Multi-Dataset Inventory & Cohort Isolation Audit</h2>
+                        <p>Complete audit of raw records, clean observations, missingness profiles, and econometric
+                            roles.</p>
+                    </div>
+                </div>
+                <div class="sas-card-body">
+                    <div id="audit-table-container"></div>
+                </div>
+            </div>
+
+            <!-- Macro Hiring Breakdown Grids -->
+            <div class="grid-cols-3">
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h3>Salary Bands Distribution</h3>
+                            <p>15,841 Postings across 6 discrete bands</p>
+                        </div>
+                    </div>
+                    <div class="sas-card-body">
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>0 to 3 LPA</span><span>4,893 (30.9%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:30.9%; height:100%; background:#005A9C;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>3 to 6 LPA</span><span>4,945 (31.2%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:31.2%; height:100%; background:#0077C8;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>6 to 10 LPA</span><span>2,884 (18.2%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:18.2%; height:100%; background:#00A3E0;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>10 to 15 LPA</span><span>1,832 (11.6%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:11.6%; height:100%; background:#10B981;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>15 to 25 LPA</span><span>981 (6.2%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:6.2%; height:100%; background:#FF6A13;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>25 to 50 LPA</span><span>306 (1.9%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:1.9%; height:100%; background:#EF4444;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h3>Experience Brackets</h3>
+                            <p>From Entry Freshers to Senior Leads</p>
+                        </div>
+                    </div>
+                    <div class="sas-card-body">
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>0-2 yrs (Fresher/Entry)</span><span>2,715 (17.1%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:17.1%; height:100%; background:#005A9C;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>3-5 yrs (Junior)</span><span>6,842 (43.2%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:43.2%; height:100%; background:#0077C8;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>6-8 yrs (Mid-Level)</span><span>3,824 (24.1%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:24.1%; height:100%; background:#00A3E0;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>9-12 yrs (Senior)</span><span>1,845 (11.7%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:11.7%; height:100%; background:#10B981;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>12+ yrs (Principal)</span><span>615 (3.9%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:3.9%; height:100%; background:#FF6A13;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h3>Geographic Hubs</h3>
+                            <p>Top Indian Analytics Metro Clusters</p>
+                        </div>
+                    </div>
+                    <div class="sas-card-body">
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>Bengaluru (Tech Capital)</span><span>4,721 (29.8%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:29.8%; height:100%; background:#0F2C59;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>Delhi-NCR (Gurgaon/Noida)</span><span>2,598 (16.4%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:16.4%; height:100%; background:#005A9C;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>Mumbai / Navi Mumbai</span><span>2,314 (14.6%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:14.6%; height:100%; background:#0077C8;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>Hyderabad</span><span>1,842 (11.6%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:11.6%; height:100%; background:#00A3E0;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="display:flex; justify-content:space-between; font-size:12px; font-weight:600; margin-bottom:4px;">
+                                    <span>Pune</span><span>1,629 (10.3%)</span>
+                                </div>
+                                <div style="background:#E2E8F0; height:8px; border-radius:4px; overflow:hidden;">
+                                    <div style="width:10.3%; height:100%; background:#10B981;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             TAB 2: TRI-AXIAL EVIDENCE BRIDGE
+             ====================================================================== -->
+        <div id="tab-triaxial" class="tab-pane">
+            <!-- Active Candidate Tri-Axial Alignment Container -->
+            <div id="candidate-triaxial-container"></div>
+
+            <!-- Non-Parametric Rank Correlation Summary Cards -->
+            <div class="grid-cols-3">
+                <div class="kpi-card accent-orange">
+                    <div class="kpi-label">Spearman &rho; (Listed vs Paid)</div>
+                    <div class="kpi-value">-0.70</div>
+                    <div class="kpi-subtext">INVERTED: What is listed most pays the lowest market wage premium!</div>
+                </div>
+                <div class="kpi-card accent-purple">
+                    <div class="kpi-label">Spearman &rho; (Listed vs Rewarded)</div>
+                    <div class="kpi-value">-0.30</div>
+                    <div class="kpi-subtext">DISCORDANT: Headline ad mentions do not track promotion hikes.</div>
+                </div>
+                <div class="kpi-card accent-green">
+                    <div class="kpi-label">Spearman &rho; (Paid vs Rewarded)</div>
+                    <div class="kpi-value">+0.50</div>
+                    <div class="kpi-subtext">POSITIVE ALIGNMENT: Market wages align with internal merit hikes.</div>
+                </div>
+            </div>
+
+            <!-- The 3 Paradoxes Callout Grid -->
+            <div class="grid-cols-3">
+                <div class="sas-card" style="border-top:3px solid #005A9C;">
+                    <div class="sas-card-body">
+                        <span class="sas-badge badge-info" style="margin-bottom:8px;">PARADOX 1</span>
+                        <h4 style="font-size:14px; font-weight:700; color:#0F2C59; margin-bottom:6px;">The AI/ML
+                            Entry-Level Illusion</h4>
+                        <p style="font-size:12px; color:#4A5568;">
+                            Ranked #1 in overall market salary, but drops to <strong>OR = 0.99 [0.81, 1.22]
+                                (p=0.91)</strong> at entry-level (0-3 yrs). AI/ML opens doors to better-paid role
+                            families, but does not earn a premium over peers in the same junior family.
+                        </p>
+                    </div>
+                </div>
+                <div class="sas-card" style="border-top:3px solid #6D28D9;">
+                    <div class="sas-card-body">
+                        <span class="sas-badge badge-purple" style="margin-bottom:8px;">PARADOX 2</span>
+                        <h4 style="font-size:14px; font-weight:700; color:#0F2C59; margin-bottom:6px;">Maths-Stats
+                            Decisive Premium</h4>
+                        <p style="font-size:12px; color:#4A5568;">
+                            Only 9.9% of job postings explicitly mention math/statistics, yet it is the <strong>#1
+                                strongest internal predictor of high salary hike (OR = 5.58, 65% first-place bootstrap
+                                frequency)</strong>. Heavily rewarded internally despite modest listing.
+                        </p>
+                    </div>
+                </div>
+                <div class="sas-card" style="border-top:3px solid #FF6A13;">
+                    <div class="sas-card-body">
+                        <span class="sas-badge badge-warning" style="margin-bottom:8px;">PARADOX 3</span>
+                        <h4 style="font-size:14px; font-weight:700; color:#0F2C59; margin-bottom:6px;">Storytelling
+                            Frequency Trap</h4>
+                        <p style="font-size:12px; color:#4A5568;">
+                            #1 Most Listed skill in job postings (23.5%), but #5 Lowest external salary premium (OR =
+                            1.16). However, pairing Dashboards with Core Coding unlocks a <strong>+2.18x executive
+                                visibility synergy multiplier</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tri-Axial Alignment Table -->
+            <div class="sas-card" style="margin-bottom:24px;">
+                <div class="sas-card-header">
+                    <div class="card-title-group">
+                        <h2>The Tri-Axial Alignment Matrix (Listed vs Paid vs Rewarded)</h2>
+                        <p>Complete multi-axial comparison across 5 junior data science skill domains with rank
+                            discordances.</p>
+                    </div>
+                </div>
+                <div class="sas-card-body">
+                    <div id="triaxial-table-container"></div>
+                </div>
+            </div>
+
+            <!-- Forest Plot with Toggle -->
+            <div class="sas-card">
+                <div class="sas-card-header">
+                    <div class="card-title-group">
+                        <h2>Forest Plot: Empirical Odds Ratios & 95% Confidence Intervals</h2>
+                        <p>Evaluate statistical certainty, whisker bounds, and parity threshold (OR = 1.0).</p>
+                    </div>
+                    <div class="toggle-group">
+                        <button class="toggle-btn forest-toggle-btn active" data-metric="paid">Axis 2: Market Paid
+                            (Salary)</button>
+                        <button class="toggle-btn forest-toggle-btn" data-metric="rewarded">Axis 3: Internal Rewarded
+                            (Hikes)</button>
+                    </div>
+                </div>
+                <div class="sas-card-body">
+                    <div id="forest-plot-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             TAB 3: EXTERNAL MARKET PRICING (PAID AXIS)
+             ====================================================================== -->
+        <div id="tab-market" class="tab-pane">
+            <!-- Active Candidate Market Salary Model 1 Container -->
+            <div id="candidate-market-model-container"></div>
+
+            <div class="grid-cols-2">
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h2>Econometric Modeling: Proportional Odds Cumulative Logit</h2>
+                            <p>SAS PROC LOGISTIC & Interval Regression on 15,841 Postings</p>
+                        </div>
+                    </div>
+                    <div class="sas-card-body">
+                        <p style="font-size:13px; color:#4A5568; margin-bottom:16px;">
+                            We model the 6 discrete categorical salary bands using an ordinal logistic cumulative logit
+                            regression. The Brant test confirms the parallel regression assumption holds (p &gt; 0.05).
+                            In addition, interval regression on log-salary provides explicit percentage wage premiums:
+                        </p>
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                            <div
+                                style="background:#F8FAFC; border:1px solid #E2E8F0; padding:12px 16px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <strong style="color:#0F2C59;">Core Coding</strong>
+                                    <div style="font-size:11px; color:#64748B;">Python, SQL, Linux, Git, Algorithms
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:#005A9C; font-weight:800; font-size:15px;">+12.5% Wage Premium
+                                    </div>
+                                    <div style="font-size:11px; color:#64748B;">95% CI: [+8.1%, +17.0%] | p &lt; 0.001
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                style="background:#F8FAFC; border:1px solid #E2E8F0; padding:12px 16px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <strong style="color:#0F2C59;">Big Data</strong>
+                                    <div style="font-size:11px; color:#64748B;">Hadoop, Spark, PySpark, Snowflake, Kafka
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:#005A9C; font-weight:800; font-size:15px;">+11.0% Wage Premium
+                                    </div>
+                                    <div style="font-size:11px; color:#64748B;">95% CI: [+7.2%, +14.9%] | p &lt; 0.001
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                style="background:#F8FAFC; border:1px solid #E2E8F0; padding:12px 16px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <strong style="color:#0F2C59;">Maths & Statistics</strong>
+                                    <div style="font-size:11px; color:#64748B;">Statistics, Probability, Econometrics,
+                                        R, SAS</div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:#005A9C; font-weight:800; font-size:15px;">+9.8% Wage Premium
+                                    </div>
+                                    <div style="font-size:11px; color:#64748B;">95% CI: [+5.6%, +14.1%] | p &lt; 0.001
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                style="background:#F8FAFC; border:1px solid #E2E8F0; padding:12px 16px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <strong style="color:#0F2C59;">AI & Machine Learning</strong>
+                                    <div style="font-size:11px; color:#64748B;">Deep Learning, PyTorch, Scikit-Learn,
+                                        NLP</div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:#005A9C; font-weight:800; font-size:15px;">+14.2% (Overall) /
+                                        Parity (Entry)</div>
+                                    <div style="font-size:11px; color:#64748B;">At 0-3 yrs: OR = 0.99 [0.81, 1.22]</div>
+                                </div>
+                            </div>
+
+                            <div
+                                style="background:#F8FAFC; border:1px solid #E2E8F0; padding:12px 16px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <strong style="color:#0F2C59;">Storytelling & Dashboards</strong>
+                                    <div style="font-size:11px; color:#64748B;">Tableau, Power BI, Dashboards, Reporting
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:#005A9C; font-weight:800; font-size:15px;">+4.2% Wage Premium
+                                    </div>
+                                    <div style="font-size:11px; color:#64748B;">95% CI: [+1.1%, +7.4%] | p = 0.008</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h2>Crosswalk Sensitivity Analysis (3-Regime Perturbation)</h2>
+                            <p>Testing mapping subjectivity: Baseline (v1) vs Strict vs Broad</p>
+                        </div>
+                        <div class="toggle-group">
+                            <button class="toggle-btn crosswalk-toggle-btn active" data-regime="baseline">Baseline
+                                (v1)</button>
+                            <button class="toggle-btn crosswalk-toggle-btn" data-regime="strict">Strict Mapping</button>
+                            <button class="toggle-btn crosswalk-toggle-btn" data-regime="broad">Broad Mapping</button>
+                        </div>
+                    </div>
+                    <div class="sas-card-body">
+                        <div id="crosswalk-table-container"></div>
+                        <div class="callout-box info" style="margin-top:16px;">
+                            <div>📌</div>
+                            <div>
+                                <strong>ROBUSTNESS VERDICT ACROSS ALL 3 CROSSWALKS</strong>
+                                <div style="margin-top:2px; font-size:12px;">
+                                    The entry-level AI/ML parity result holds firmly across all three crosswalk regimes
+                                    (OR = 0.99, 1.10, and 1.19; all 95% CIs cross 1.0). Meanwhile, Core Coding and Big
+                                    Data remain paid in 3 out of 3 regimes.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             TAB 4: INTERNAL REWARD (REWARDED AXIS)
+             ====================================================================== -->
+        <div id="tab-internal" class="tab-pane">
+            <!-- Active Candidate Internal Hike Model 2 Container -->
+            <div id="candidate-internal-model-container"></div>
+
+            <!-- Live Model Metrics KPI Bar -->
+            <div id="live-model-metrics" style="margin-bottom:20px;"></div>
+
+            <div class="grid-cols-2">
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h2>Internal Salary Hike Model: Firth's Penalized GLM & Bootstrap</h2>
+                            <p>Evaluated on 137 verified junior analysts with B=2,000 resamples</p>
+                        </div>
+                    </div>
+                    <div class="sas-card-body">
+                        <p style="font-size:13px; color:#4A5568; margin-bottom:14px;">
+                            Because the JDS cohort contains n = 137 observations, naive unregularized logistic
+                            regression risks quasi-complete separation. We apply <strong>Firth's penalized maximum
+                                likelihood</strong> and construct <strong>Bias-Corrected and Accelerated (BCa) bootstrap
+                                intervals</strong>:
+                        </p>
+                        <div class="sas-card" style="background:#FAFBFD; padding:16px; margin-bottom:16px;">
+                            <div style="font-size:13px; font-weight:700; color:#0F2C59;">Junior High-Hike Odds
+                                Multipliers per Standard Deviation:</div>
+                            <ul
+                                style="margin-top:10px; margin-left:18px; font-size:12px; color:#334155; display:flex; flex-direction:column; gap:8px;">
+                                <li><strong>Maths & Statistics:</strong> OR = 5.58x [95% BCa: 2.68, 21.62] &mdash;
+                                    <em>Ranks 1st in 65.2% of all 2,000 bootstrap draws!</em>
+                                </li>
+                                <li><strong>AI & Machine Learning:</strong> OR = 3.65x [95% BCa: 1.33, 13.87] &mdash;
+                                    Strong internal reward when foundational coding is present.</li>
+                                <li><strong>Storytelling & Dashboards:</strong> OR = 3.51x [95% BCa: 1.79, 17.46]
+                                    &mdash; Critical differentiator for internal stakeholder visibility.</li>
+                                <li><strong>Big Data:</strong> OR = 2.73x [95% BCa: 1.52, 8.64] &mdash; Consistently
+                                    positive across all bootstrap draws.</li>
+                                <li><strong>Core Coding:</strong> OR = 1.87x [95% BCa: 0.94, 4.72] &mdash; <em>CI
+                                        crosses parity (1.0)! Juniors are mostly at the ceiling (median = 5.0).</em>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h2>The Coding &times; Storytelling Synergy Surface</h2>
+                            <p>Non-linear interaction unlocks executive promotion multiplier</p>
+                        </div>
+                    </div>
+                    <div class="sas-card-body">
+                        <div class="callout-box success">
+                            <div style="font-size:24px;">⚡</div>
+                            <div>
+                                <strong style="font-size:14px;">EMPIRICAL INTERACTION TERM (&beta; = 0.425, Multiplier =
+                                    2.18x)</strong>
+                                <div style="margin-top:4px; font-size:12px;">
+                                    When an analyst possesses BOTH High Core Coding (&ge;3.5) AND High
+                                    Storytelling/Dashboards (&ge;3.5), their probability of receiving a top promotion
+                                    hike jumps by <strong>+2.18x</strong> compared to specialists in only one area.
+                                </div>
+                            </div>
+                        </div>
+                        <div id="synergy-surface-container" style="margin-top:16px;"></div>
+                        <div style="font-size:12px; color:#4A5568; line-height:1.6; margin-top:12px;">
+                            <p><strong>The "Translator" Advantage:</strong> Junior data scientists who can both build
+                                clean, reproducible data pipelines (Coding) AND translate analytical findings into
+                                interactive business dashboards for executives become irreplaceable in client delivery.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real Model Visualizations: ROC Curve & Confusion Matrix -->
+            <div class="grid-cols-2" style="margin-top:20px;">
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h3>JDS Junior Hike ROC Curve (Live from jds_hike_logistic.joblib)</h3>
+                            <p>ROC trajectory evaluated on 137 junior data scientists</p>
+                        </div>
+                        <span class="sas-badge badge-primary">REAL MODEL</span>
+                    </div>
+                    <div class="sas-card-body" style="display:flex; justify-content:center;">
+                        <div id="roc-curve-jds" style="max-width:460px; width:100%;"></div>
+                    </div>
+                </div>
+
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h3>Model Confusion Matrix (Empirical Classification)</h3>
+                            <p>Actual vs Predicted High Hike (&gt;25%) across 137 junior profiles</p>
+                        </div>
+                        <span class="sas-badge badge-success">5-FOLD CV</span>
+                    </div>
+                    <div class="sas-card-body"
+                        style="display:flex; justify-content:center; align-items:center; min-height:300px;">
+                        <div id="confusion-matrix-jds"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real Sample Employee Inferences Table -->
+            <div class="sas-card" style="margin-top:20px;">
+                <div class="sas-card-header">
+                    <div class="card-title-group">
+                        <h3>Sample Junior Employee Predictions (Real Data from clean_jds_traits.csv)</h3>
+                        <p>Actual predictions and probabilities computed by jds_hike_logistic.joblib</p>
+                    </div>
+                    <span class="sas-badge badge-info">10 RANDOM EMPLOYEES</span>
+                </div>
+                <div class="sas-card-body">
+                    <div id="live-sample-predictions"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             TAB 5: SENIOR DIAGNOSTICS & TARGET LEAKAGE
+             ====================================================================== -->
+        <div id="tab-senior" class="tab-pane">
+            <!-- Active Candidate Senior Diagnostic Model 3 & 4 Container -->
+            <div id="candidate-senior-model-container"></div>
+
+            <div class="sas-card" style="margin-bottom:24px;">
+                <div class="sas-card-header">
+                    <div class="card-title-group">
+                        <h2>Senior Data Scientist Dataset Audit & Target Leakage Discovery</h2>
+                        <p>Forensic diagnosis of SDS Personality Traits (152 seniors) & Big Five OCEAN scores</p>
+                    </div>
+                </div>
+                <div class="sas-card-body">
+                    <div class="grid-cols-3" style="margin-bottom:20px;">
+                        <div class="kpi-card accent-orange">
+                            <div class="kpi-label">Random Forest Classifier AUC</div>
+                            <div class="kpi-value">1.000</div>
+                            <div class="kpi-subtext">Perfect separation = Definitive Target Leakage!</div>
+                        </div>
+                        <div class="kpi-card accent-purple">
+                            <div class="kpi-label">Firth Penalized Logit AUC</div>
+                            <div class="kpi-value">0.969</div>
+                            <div class="kpi-subtext">Suspiciously elevated across all cross-validation folds</div>
+                        </div>
+                        <div class="kpi-card accent-cyan">
+                            <div class="kpi-label">Simple Additive Sum Accuracy</div>
+                            <div class="kpi-value">92.5%</div>
+                            <div class="kpi-subtext">A simple cutoff (>194) separates high vs low success!</div>
+                        </div>
+                    </div>
+
+                    <div class="callout-box warning">
+                        <div>⚠️</div>
+                        <div>
+                            <strong>JURY INTERROGATION DEFENSE: Why We Refused to Publish Naive ML Accuracy on
+                                SDS</strong>
+                            <div style="margin-top:2px; font-size:12px;">
+                                While competitor teams will proudly present Random Forest models with 99-100% accuracy,
+                                our team diagnosed that the Senior "Success" label was constructed directly from an
+                                additive threshold of the personality scores themselves. Blindly using this to guide
+                                students is methodologically fraudulent.
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 style="font-size:14px; font-weight:700; color:#0F2C59; margin-top:16px; margin-bottom:10px;">
+                        Career-Stage Dichotomy: Junior Velocity vs Senior Advancement
+                    </h4>
+                    <div class="grid-cols-2">
+                        <div style="background:#F8FAFC; border:1px solid #CBD5E1; padding:16px; border-radius:6px;">
+                            <strong style="color:#005A9C;">Junior Career Stage (0-3 yrs):</strong>
+                            <p style="font-size:12px; color:#475569; margin-top:6px;">
+                                Advancements are strictly governed by <strong>verified quantitative skills</strong>:
+                                math depth, statistical validity, and reproducible coding pipelines.
+                            </p>
+                        </div>
+                        <div style="background:#F8FAFC; border:1px solid #CBD5E1; padding:16px; border-radius:6px;">
+                            <strong style="color:#6D28D9;">Senior Career Stage (5+ yrs):</strong>
+                            <p style="font-size:12px; color:#475569; margin-top:6px;">
+                                Technical competencies reach baseline parity. Promotion to Partner/Principal hinges on
+                                <strong>Conscientiousness (OR = 3.84x)</strong>, executive composure, and client-facing
+                                communication.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SDS ROC Curve and Trait Comparison -->
+            <div class="grid-cols-2" style="margin-top:24px;">
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h3>SDS OCEAN Logistic ROC Curve (Live)</h3>
+                            <p>Real ROC from sds_logit_ocean.joblib (N=152)</p>
+                        </div>
+                    </div>
+                    <div class="sas-card-body" style="display:flex; justify-content:center;">
+                        <div id="roc-curve-sds" style="max-width:400px; width:100%;"></div>
+                    </div>
+                </div>
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h3>Big Five Trait Means by Success Group (Real Data)</h3>
+                            <p>High-success (n=68) vs Low-success (n=84) seniors</p>
+                        </div>
+                    </div>
+                    <div class="sas-card-body">
+                        <div id="trait-comparison-sds"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             TAB 6: LIVE INTERACTIVE STUDENT DECISION SIMULATOR
+             ====================================================================== -->
+        <div id="tab-simulator" class="tab-pane">
+            <!-- Persona Quick-Loaders -->
+            <div class="persona-selector">
+                <span style="font-size:12px; font-weight:700; color:#0F2C59; display:inline-flex; align-items:center;">
+                    Benchmark Personas (Approach Note Table 20):
+                </span>
+                <button class="persona-chip active" data-persona="asha">Asha (Fresher, Math-Weak)</button>
+                <button class="persona-chip" data-persona="rohan">Rohan (ML Enthusiast)</button>
+                <button class="persona-chip" data-persona="meera">Meera (Saturated Senior Junior)</button>
+                <button class="persona-chip" data-persona="kabir">Kabir (Sub-Baseline Coding &rarr; Abstain)</button>
+                <button class="persona-chip" data-persona="vikram">Vikram (Mid-Level Lead)</button>
+            </div>
+
+            <!-- Live Persona Predictions from Trained Model -->
+            <div class="sas-card" style="margin-bottom:20px;">
+                <div class="sas-card-header">
+                    <div class="card-title-group">
+                        <h2>Real Model Predictions for Benchmark Personas (from jds_hike_logistic.joblib)</h2>
+                        <p>Actual P(High Hike) output from the trained sklearn model for each Approach Note persona</p>
+                    </div>
+                    <span class="sas-badge badge-success" style="font-size:12px;">LIVE FROM JOBLIB</span>
+                </div>
+                <div class="sas-card-body">
+                    <div id="live-persona-predictions"></div>
+                </div>
+            </div>
+
+            <!-- Live Trained Model Inference Banner (Real-time Joblib Prediction) -->
+            <div id="live-candidate-inference-container"></div>
+
+            <!-- Two-Column Simulator Layout -->
+            <div class="grid-1-2">
+                <!-- Left Column: Input Controls -->
+                <div class="sas-card">
+                    <div class="sas-card-header">
+                        <div class="card-title-group">
+                            <h2>Candidate Profile & Learning Budget</h2>
+                            <p>Adjust current self-ratings (1.0 - 5.0) and constraints</p>
+                        </div>
+                    </div>
+                    <div class="sas-card-body">
+                        <!-- Target Role -->
+                        <div style="margin-bottom:16px;">
+                            <label
+                                style="font-size:12px; font-weight:700; color:#0F2C59; display:block; margin-bottom:4px;">Target
+                                Role Family</label>
+                            <select id="select-target-role"
+                                style="width:100%; padding:8px 12px; border:1px solid #CBD5E1; border-radius:4px; font-size:13px; font-weight:500;">
+                                <option value="Data Analyst (0-3 yrs)">Data Analyst (0-3 yrs)</option>
+                                <option value="Junior Data Scientist (0-3 yrs)">Junior Data Scientist (0-3 yrs)</option>
+                                <option value="ML Engineer (0-3 yrs)">Machine Learning Engineer (0-3 yrs)</option>
+                                <option value="Data Engineer (0-3 yrs)">Data Engineer (0-3 yrs)</option>
+                                <option value="Senior Analytics Consultant (5+ yrs)">Senior Analytics Consultant (5+
+                                    yrs)</option>
+                            </select>
+                        </div>
+
+                        <!-- Experience Slider -->
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span>Years of Work Experience</span>
+                                <span class="slider-val" id="val-exp">0.0 yrs</span>
+                            </div>
+                            <input type="range" id="slider-exp" class="sas-slider" min="0.0" max="8.0" step="0.5"
+                                value="0.0">
+                        </div>
+
+                        <!-- Hours Budget Slider -->
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span>6-Month Learning Budget</span>
+                                <span class="slider-val" id="val-hours">400 hrs</span>
+                            </div>
+                            <input type="range" id="slider-hours" class="sas-slider" min="100" max="600" step="50"
+                                value="400">
+                        </div>
+
+                        <hr style="border:none; border-top:1px solid #E2E8F0; margin:16px 0;">
+
+                        <!-- Skill Sliders -->
+                        <div
+                            style="font-size:12px; font-weight:700; color:#0F2C59; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px;">
+                            Current Skill Self-Ratings (1.0 to 5.0):
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span>Big Data</span>
+                                <span class="slider-val" id="val-big-data">3.2</span>
+                            </div>
+                            <input type="range" id="slider-big-data" class="sas-slider" min="1.0" max="5.0" step="0.1"
+                                value="3.2">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span>Maths & Statistics</span>
+                                <span class="slider-val" id="val-maths">3.0</span>
+                            </div>
+                            <input type="range" id="slider-maths" class="sas-slider" min="1.0" max="5.0" step="0.1"
+                                value="3.0">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span>Core Coding</span>
+                                <span class="slider-val" id="val-coding">4.6</span>
+                            </div>
+                            <input type="range" id="slider-coding" class="sas-slider" min="1.0" max="5.0" step="0.1"
+                                value="4.6">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span>AI & Machine Learning</span>
+                                <span class="slider-val" id="val-aiml">4.2</span>
+                            </div>
+                            <input type="range" id="slider-aiml" class="sas-slider" min="1.0" max="5.0" step="0.1"
+                                value="4.2">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span>Storytelling & Dashboards</span>
+                                <span class="slider-val" id="val-dashboards">3.0</span>
+                            </div>
+                            <input type="range" id="slider-dashboards" class="sas-slider" min="1.0" max="5.0" step="0.1"
+                                value="3.0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Radar & Output Decision Card -->
+                <div>
+                    <!-- Radar Chart Card -->
+                    <div class="sas-card" style="margin-bottom:20px;">
+                        <div class="sas-card-header">
+                            <div class="card-title-group">
+                                <h3>5-Axis Skill Radar: Current vs Projected vs High-Hike Benchmark</h3>
+                                <p>Real-time geometric overlay showing knapsack expansion against empirical medians</p>
+                            </div>
+                        </div>
+                        <div class="sas-card-body"
+                            style="display:flex; justify-content:center; align-items:center; flex-direction:column;">
+                            <div id="radar-chart-container" style="width:100%; max-width:460px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Reactive Decision Card Output -->
+                    <div id="decision-card-output"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             TAB 7: SAS VIYA CAS ARCHITECTURE & CODE
+             ====================================================================== -->
+        <div id="tab-architecture" class="tab-pane">
+            <div class="sas-card" style="margin-bottom:24px;">
+                <div class="sas-card-header">
+                    <div class="card-title-group">
+                        <h2>SAS Enterprise Production Pipeline (SAS Viya / CAS Engine)</h2>
+                        <p>PROC CASUTIL in-memory tables, PROC LOGISTIC cumulative logit, and Model Studio comparison
+                        </p>
+                    </div>
+                    <button class="btn-sas btn-sas-secondary" id="btn-copy-sas">Copy SAS Code</button>
+                </div>
+                <div class="sas-card-body">
+                    <div class="sas-code-viewer" id="sas-code-content">
+                        <span
+                            class="com-sas">/*=============================================================================*
+                            * SAS ENTERPRISE PRODUCTION PIPELINE: TRI-AXIAL HUMAN CAPITAL DECISION ENGINE *
+                            * SAS CU Hackathon Round 2 & Round 3 Enterprise Implementation *
+                            * Platform: SAS Viya for Learners (VFL) / Cloud Analytic Services (CAS) *
+                            * Team: Aavishkar Hacks (Sachin Punetha, Yatharth Dahiya, Jayant Bana, Shivam) *
+                            *=============================================================================*/</span>
+
+                        <span class="com-sas">/* 1. INITIALIZE CLOUD ANALYTIC SERVICES (CAS) SESSION */</span>
+                        <span class="kw-sas">cas</span> casauto sessopts=(caslib=<span class="str-sas">"CASUSER"</span>
+                        timeout=1800 locale=<span class="str-sas">"en_US"</span>);
+                        <span class="kw-sas">libname</span> casuser cas caslib=<span class="str-sas">"CASUSER"</span>;
+
+                        <span class="com-sas">/* 2. REGISTER IN-MEMORY CAS TABLES */</span>
+                        <span class="kw-sas">proc casutil</span>;
+                        <span class="kw-sas">import</span> datafile=<span
+                            class="str-sas">"/workspace/clean_data/clean_analytics_jobs.csv"</span>
+                        outcaslib=<span class="str-sas">"CASUSER"</span> casout=<span
+                            class="str-sas">"analytics_jobs"</span> replace
+                        importoptions=(filetype=<span class="str-sas">"csv"</span> getnames=True);
+                        <span class="kw-sas">import</span> datafile=<span
+                            class="str-sas">"/workspace/clean_data/clean_jds_traits.csv"</span>
+                        outcaslib=<span class="str-sas">"CASUSER"</span> casout=<span
+                            class="str-sas">"jds_traits"</span> replace
+                        importoptions=(filetype=<span class="str-sas">"csv"</span> getnames=True);
+                        <span class="kw-sas">quit</span>;
+
+                        <span class="com-sas">/* 3. MODEL 1: PROPORTIONAL ODDS ORDINAL LOGISTIC REGRESSION (SALARY
+                            BANDS) */</span>
+                        <span class="kw-sas">proc logistic</span> data=casuser.analytics_jobs
+                        outmodel=casuser.salary_model_fit
+                        plots(only)=(oddsratio effect);
+                        <span class="kw-sas">class</span> exp_bracket(ref=<span class="str-sas">"0-2 yrs
+                            (Fresher/Entry)"</span>)
+                        metro_bengaluru(ref=<span class="str-sas">"0"</span>) / param=ref;
+
+                        <span class="kw-sas">model</span> salary_ord = flag_big_data
+                        flag_maths_stats
+                        flag_core_coding
+                        flag_ai_ml
+                        flag_storytelling_dashboards
+                        exp_mid / link=clogit orpvalue;
+                        <span class="kw-sas">run</span>;
+
+                        <span class="com-sas">/* 4. MODEL 2: JUNIOR PROMOTION HIKE MODEL WITH FIRTH'S PENALTY */</span>
+                        <span class="kw-sas">proc logistic</span> data=casuser.jds_traits plots(only)=(roc effect);
+                        <span class="kw-sas">model</span> high_hike(event=<span class="str-sas">"1"</span>) =
+                        score_big_data
+                        score_maths_stats
+                        score_core_coding
+                        score_ai_ml
+                        score_storytelling_dashboards
+                        coding_x_storytelling / firth clodds=pl;
+                        <span class="kw-sas">run</span>;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             TAB 8: OFFICIAL SAS FIGURES GALLERY (LIGHTBOX)
+             ====================================================================== -->
+        <div id="tab-gallery" class="tab-pane">
+            <div class="sas-card">
+                <div class="sas-card-header">
+                    <div class="card-title-group">
+                        <h2>High-Resolution Figures Gallery & Jury Defense Inspection</h2>
+                        <p>Click any figure to inspect in high-resolution with forensic defense annotations.</p>
+                    </div>
+                </div>
+                <div class="sas-card-body">
+                    <div class="figure-gallery-grid" id="figure-gallery-container"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ==========================================================================
+         FIGURE LIGHTBOX MODAL DIALOG
+         ========================================================================== -->
+    <div id="figure-modal" class="modal-overlay">
+        <div class="modal-content-box">
+            <button class="modal-close-btn" id="modal-close">&times;</button>
+            <div style="padding:24px;">
+                <h3 id="modal-title" style="font-size:18px; font-weight:800; color:#0F2C59; margin-bottom:6px;"></h3>
+                <p id="modal-desc" style="font-size:13px; color:#56687A; margin-bottom:16px;"></p>
+                <div style="background:#000; border-radius:6px; overflow:hidden; display:flex; justify-content:center;">
+                    <img id="modal-img" src="" alt="Figure Inspection"
+                        style="width:100%; height:auto; max-height:70vh; object-fit:contain;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data-engine.js?v=3.2"></script>
+    <script src="js/charts.js?v=3.2"></script>
+    <script src="js/decision-simulator.js?v=3.2"></script>
+    <script src="js/model-outputs-loader.js?v=3.2"></script>
+    <script src="js/candidate-sync.js?v=3.2"></script>
+    <script src="js/resume-analyzer.js?v=3.2"></script>
+    <script src="js/app.js?v=3.2"></script>
+    <script>
+        // Load real model outputs and render live data
+        document.addEventListener('DOMContentLoaded', async () => {
+            const loaded = await ModelOutputs.load();
+            if (loaded) {
+                ModelOutputs.renderModelMetrics('live-model-metrics');
+                ModelOutputs.renderSamplePredictions('live-sample-predictions');
+                ModelOutputs.renderPersonaPredictions('live-persona-predictions');
+                ModelOutputs.renderConfusionMatrix('confusion-matrix-jds');
+                ModelOutputs.renderROCCurve('roc-curve-jds', 'jds');
+                ModelOutputs.renderROCCurve('roc-curve-sds', 'sds');
+                ModelOutputs.renderTraitComparison('trait-comparison-sds');
+                ModelOutputs.renderLivePrediction('live-candidate-inference-container', {
+                    big_data: 3.2,
+                    maths: 3.0,
+                    coding: 4.6,
+                    ai_ml: 4.2,
+                    dashboards: 3.0,
+                    experience_yrs: 0.0,
+                    metro: 'bengaluru'
+                });
+                if (window.SASVisualizer && typeof window.SASVisualizer.renderSynergySurface === 'function') {
+                    window.SASVisualizer.renderSynergySurface('synergy-surface-container', null);
+                }
+                console.log('[Dashboard] Real model outputs rendered.');
+            }
+        });
+    </script>
+</body>
+
+</html>

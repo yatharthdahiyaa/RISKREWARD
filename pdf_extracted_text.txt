@@ -1,0 +1,2118 @@
+=== PAGE 1 ===
+Approach Note 
+Listed, Paid, Rewarded 
+What should a data-science student learn next? A verified, uncertainty-
+aware next-skill decision aid built from four datasets 
+PROJECT TITLE:  Skill Investment Intelligence: Measuring What Employers List, 
+Pay, and Reward  
+PROJECT SUMMARY:   
+From Listed to Rewarded helps students identify which skills are truly valuable in the job 
+market. It compares coding, mathematics & statistics, AI/ML, big data, and dashboards & 
+storytelling based on demand, salary, and employer rewards. Using statistical analysis and 
+robustness checks, it generates evidence-based Skill Investment Cards with clear 
+recommendations or reports “Not Enough Evidence” when the data is insufficient. 
+ 
+Data Used: Data Science Jobs, Analytics Jobs, JDS Skill Traits, SDS Personality Traits (2024–
+25 sample data supplied by SAS). 
+Tools Used: Python (pandas, statsmodels, scikit-learn) for preparation and modelling; SAS Viya 
+for Learners (VisualAnalytics, Model Studio) for reporting and model comparison  
+Team: Aavishkar Hacks 
+LEAD: SACHIN PUNETHA 
+YATHARTH DAHIYA 
+JAYANT KUMAR BANA 
+SHIVAM RAWAT 
+ 
+ 
+.  
+
+
+=== PAGE 2 ===
+ 
+2 
+Contents 
+Executive summary ..................................................................................................................................... 3 
+1. Problem definition and analytics objective ......................................................................................... 4 
+1.1 Context ............................................................................................................................................... 4 
+1.2 Who decides what .............................................................................................................................. 4 
+1.3 Core question and objectives ............................................................................................................. 4 
+1.4 Hypotheses ......................................................................................................................................... 5 
+1.5 Scope .................................................................................................................................................. 5 
+1.6 What success looks like ..................................................................................................................... 5 
+2. Approach .................................................................................................................................................. 5 
+2.1 Overall flow ....................................................................................................................................... 5 
+2.2 Design principles................................................................................................................................ 6 
+2.3 Why each method............................................................................................................................... 6 
+2.4 Verification framework ...................................................................................................................... 7 
+2.5 Tools and reproducibility ................................................................................................................... 7 
+3. Data exploration and preparation ........................................................................................................ 8 
+3.1 What the four files actually are .......................................................................................................... 8 
+3.2 Data issues found and how each was handled .................................................................................... 8 
+3.3 Analytics Jobs: salary, experience and location ................................................................................. 9 
+3.4 Separating data roles: a validated filter .............................................................................................. 9 
+3.5 Data Science Jobs: the title ladder ................................................................................................... 10 
+3.6 What employers list ......................................................................................................................... 11 
+3.7 Linking posting skills to the five junior skill areas .......................................................................... 12 
+3.8 Junior and senior files ...................................................................................................................... 12 
+4. Data analysis .......................................................................................................................................... 13 
+4.1 Market price: what the market pays ................................................................................................. 13 
+4.2 Internal reward: what one company rewards ................................................................................... 16 
+4.3 The bridge: Listed vs Paid vs Rewarded .......................................................................................... 17 
+4.4 Senior profile: career-stage contrast and a label check .................................................................... 19 
+4.5 The Skill Investment Card ............................................................................................................... 20 
+5. Results and conclusions ........................................................................................................................ 22 
+5.1 Answer to the core question ............................................................................................................. 22 
+5.2 Hypotheses ....................................................................................................................................... 22 
+5.3 Conclusions ...................................................................................................................................... 22 
+6. Implications ............................................................................................................................................ 23 
+6.1 For students and early-career analysts ............................................................................................. 23 
+6.2 For universities ................................................................................................................................. 23 
+6.3 For employers and recruiters ............................................................................................................ 23 
+6.4 Limitations ....................................................................................................................................... 24 
+6.5 Next steps ......................................................................................................................................... 24 
+6.6 References ........................................................................................................................................ 24 
+Appendix ..................................................................................................................................................... 25 
+
+
+=== PAGE 3 ===
+ 
+3 
+Executive summary 
+Students decide what to learn from skill lists and headline demand figures. Those show what 
+employers list, not what the market pays once you compare like-for-like jobs, and not what an 
+employer rewards after hiring. We linked all four supplied datasets to measure those three 
+things for five skill areas — coding, maths & statistics, AI/ML, big data, and dashboards & 
+storytelling — and turned the results into a Skill Investment Card that recommends a next skill 
+with an interval, or says "not enough evidence". 
+Every step was verified before the next began: assertions on the data, known-answer tests on 
+the statistical methods, null tests, and robustness checks. The main findings: 
+1. AI/ML is the most hyped skill but carries no salary premium at entry level. Among 
+postings needing 0–3 years, AI/ML has an odds ratio of 0.99 [0.74, 1.33] for a higher 
+salary band once experience, city and role family are controlled. Its large raw premium 
+mostly reflects that ML jobs sit in better-paid role families. 
+2. Coding pays, everywhere. Coding is worth about +12.5% in salary [+8.1%, +17.0%] 
+within the same role family, survives all three skill-mapping versions, and is strongest at 
+entry level (odds ratio 1.89). 
+3. Maths & statistics is what one company rewards most. For junior data scientists, it is 
+the strongest predictor of a high salary hike (odds ratio 4.6 per standard deviation, BCa 
+interval [2.0, 9.9]; ranked first in 65% of 2,000 resamples), yet the market premium for 
+it is modest. This is the clearest "rewarded more than paid" gap. 
+4. Dashboards & storytelling are rewarded inside, not paid extra outside. The apparent 
+market penalty (odds ratio 0.65) is an artefact of Excel/MIS reporting jobs: with core 
+visualisation tools only (Tableau, Power BI, Qlik), the penalty disappears, and at entry 
+level those tools carry a premium (1.61). 
+5. Your weakest skill says more than your strongest. Among juniors, the weakest of five 
+scores predicts a high hike far better than the strongest (AUC 0.85 vs 0.59; difference 
+0.26 [0.18, 0.35]). Spread itself does not matter once the overall level is known — the 
+lesson is "no weak area", not "be a generalist". 
+6. The senior success label can be reproduced almost exactly from the trait scores (one 
+cut-off on the total score is 92.5% accurate; a penalised curved model reaches cross-
+validated AUC 0.998). We report this as a finding about how the label was built, not as a 
+strong model of real-world success. 
+The Skill Investment Card passes six tests (including zero monotonicity violations in 1,000 
+random profiles) and abstains for profiles outside the data. For example, a final-year student 
+strong in coding but weak in statistics and storytelling is advised to invest in maths & statistics 
+first (best option in 89% of uncertainty draws). 
+
+
+=== PAGE 4 ===
+ 
+4 
+1. Problem definition and analytics objective 
+1.1 Context 
+Demand for analytics skills in India is real but uneven across career stages. Naukri's JobSpeak 
+index for May 2026 reported AI/ML hiring up 22% year on year against 7% for fresher hiring, 
+with fresher growth driven mainly by customer-facing roles [1]. Headlines like these, together 
+with recruiter and edtech skill lists, are what students use to choose what to learn. They describe 
+demand — how often a skill is asked for — but not price (what it adds to pay in a comparable 
+job) or reward (what an employer actually pays more for after hiring). 
+SAS supplied four 2024–25 sample datasets that, for the first time in one place, cover all three: 
+job postings with skills and salary bands (Analytics Jobs), company-level salary summaries by 
+title (Data Science Jobs), measured skills and salary-hike outcomes for junior data scientists 
+(JDS), and personality traits and success outcomes for senior data scientists (SDS). 
+1.2 Who decides what 
+Primary user: a final-year student or early-career analyst (0–3 years) deciding where the next 
+six months of learning go — deeper modelling, maths and statistics foundations, data 
+engineering, or communication. Secondary readers: universities designing curricula and 
+employers writing job descriptions. Hiring managers screening candidates are explicitly not a 
+target user (see scope). 
+1.3 Core question and objectives 
+Core question: Which skills does the market pay for, which does a company reward, 
+where do the two disagree — and how sure are we? 
+ 
+Table 1. Analytics objectives and how each is delivered. 
+ 
+# 
+Objective 
+Data 
+Deliverable 
+O1 
+Market price: estimate each skill's salary premium within 
+role family, controlling for experience and city; compare 0–3 
+vs 5+ years 
+Analytics Jobs 
+Premium waterfall; career-
+stage contrast 
+O2 
+Internal reward: estimate how each junior skill relates to a 
+high salary hike, with bootstrap intervals 
+JDS 
+Ranked skill effects with 
+BCa intervals 
+O3 
+Bridge: map the five junior skill areas to posting skills and 
+compare Listed vs Paid vs Rewarded 
+Analytics Jobs + 
+JDS 
+Three-axis comparison, 
+verdict per area 
+O4 
+Senior profile: test curved personality effects and whether 
+the label is reproducible from the scores 
+SDS 
+Model with permutation test 
+and label check 
+O5 
+Decision aid: a scorecard that ranks the next skill with an 
+interval and abstains when evidence is thin 
+All 
+Skill Investment Card + 
+tests 
+ 
+
+
+=== PAGE 5 ===
+ 
+5 
+1.4 Hypotheses 
+Table 2. Hypotheses fixed before modelling. 
+ 
+Hypothesis (stated before analysis) 
+How it is tested 
+H1 
+The skills listed most often are not the ones with the 
+largest within-role salary premium 
+Listed share vs ordinal-model premium 
+(§4.1) 
+H2 
+What pays at entry level differs from what pays at 5+ 
+years 
+Separate models by experience band 
+(§4.1.4) 
+H3 
+The market price and the internal reward of a skill area 
+disagree for at least one area, robustly 
+Disagreement must hold under ≥2 of 3 
+crosswalks (§4.3) 
+H4 
+Senior success is related to personality in a curved 
+(non-linear) way 
+Linear vs quadratic models; 
+permutation test; label check (§4.4) 
+ 
+1.5 Scope 
+In scope: the four supplied files; association-level findings; Indian postings. Out of scope: 
+causal claims ("learning X causes a raise"), any tool for screening candidates by skill or 
+personality, salary forecasts beyond the data period, and any external data in the analysis (the 
+Naukri figure above is context only, consistent with the no-data-transfer rule). 
+1.6 What success looks like 
+• Skill premiums that survive role-family control, shown as a waterfall: raw → experience 
+and city → role family. 
+• A Listed vs Paid vs Rewarded comparison with intervals and a verdict that survives 
+alternative skill mappings. 
+• A senior result reported with a permutation test and a label-construction check, not just 
+an AUC. 
+• A scorecard whose recommendations carry intervals and abstain outside the data's 
+support. 
+• Every data fix logged with its row count and its measured effect on results. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+=== PAGE 6 ===
+ 
+6 
+2. Approach 
+2.1 Overall flow 
+Figure 1 shows the pipeline. Three questions — what is listed, what is paid, what is rewarded  
+are answered from different files, then joined through a skill-area crosswalk and turned into a 
+decision aid. The senior file is used as a career-stage contrast. 
+ 
+Figure 1. Analysis flow. Blue = source data, grey = preparation, orange = the three measurements, green = 
+synthesis, black = the student-facing output. 
+2.2 Design principles 
+1. Compare like with like. A skill can look valuable only because it appears in senior or 
+specialist jobs. Every market premium is therefore reported after controlling for 
+experience, city and role family. 
+2. Show uncertainty everywhere. The junior and senior files are small (139 and 161 rows). 
+Every estimate carries an interval; performance is cross-validated and repeated; small-
+sample intervals use the bias-corrected and accelerated (BCa) bootstrap. 
+3. Verify each step before using it. No step feeds the next until its checks pass (Section 
+2.4). 
+4. Abstain rather than guess. The decision aid says "not enough evidence" when the 
+student's profile is outside the data or two options are statistically tied. 
+2.3 Why each method 
+Table 3. Method choices and their justification. 
+Question 
+Method 
+Why this method 
+Market price (O1) 
+Proportional-odds ordinal logistic 
+regression on salary band 
+Salary in Analytics Jobs is six bands (0–3 … 25–50 
+LPA), not a number; ordinary regression on band 
+mid-points would invent precision 
+Robustness of O1 
+Interval regression on log-salary using band 
+edges 
+Gives a % premium and checks the result does not 
+depend on the ordinal model 
+Many skills at once 
+Benjamini–Hochberg false-discovery 
+control (q < 0.10) 
+64 skills tested; without correction several 
+"premiums" would be chance 
+
+
+=== PAGE 7 ===
+ 
+7 
+Question 
+Method 
+Why this method 
+Internal reward 
+(O2) 
+Logistic regression on standardised scores; 
+5-fold CV × 20 repeats; BCa bootstrap 
+(2,000) 
+n = 139: point estimates alone mislead; repeated CV 
+gives honest AUC; BCa corrects small-sample bias 
+Is the signal real? 
+Permutation test (500 label shuffles) 
+Gives a p-value for the cross-validated AUC itself 
+Bridge (O3) 
+Three crosswalk versions; disagreement 
+must hold in ≥2 of 3 
+Mapping posting keywords to five areas is a 
+judgement; the verdict must not hinge on it 
+Senior (O4) 
+Linear vs quadratic logistic; ridge penalty 
+when the fit separates; label reproduction 
+test 
+Tests curvature while guarding against an over-fitted 
+or mechanically constructed label 
+Decision aid (O5) 
+Bootstrap draws of reward × market 
+estimates, mixed over crosswalks 
+Turns both uncertainties into an interval and a 
+"probability this is the best option" 
+ 
+2.4 Verification framework 
+Five kinds of check are used throughout: assertions (the data is what we think — e.g. exactly 
+14,840 rows after de-duplication), sanity checks (results match known patterns — salary rises 
+with experience), known-answer tests (plant a true effect in simulated data and confirm the 
+method recovers it), null tests (shuffle the signal away and confirm the effect vanishes), and 
+robustness checks (re-run with an alternative reasonable choice). Before touching real results, 
+each core method was tested on simulated data with a known answer (Table 4). 
+Table 4. Known-answer tests run before the real analysis. 
+Test 
+Set-up 
+Result 
+Verdict 
+Ordinal regression on 
+banded salary 
+200 simulations, n = 2,700, true 
+premium 0.25 log-points, banded at the 
+real cut points 
+Mean estimate 0.251; 95% CI 
+coverage 98% 
+Pass 
+Bootstrap intervals, n = 
+139 
+60 simulations × 400 resamples on the 
+real JDS scores with planted effects 
+Coverage 0.87–0.97; slight 
+under-coverage for the largest 
+effect 
+Pass, with BCa 
+adopted 
+Permutation test 
+200 null datasets; one real-signal 
+dataset 
+2% false positives 
+(conservative); real signal p = 
+0.002 
+Pass 
+Benjamini–Hochberg 
+300 runs, 40 null + 10 real p-values, α = 
+0.10 
+Observed false-discovery rate 
+0.075 
+Pass 
+Curvature test (senior) 
+200 simulations without and with a 
+planted curve 
+False-positive rate 6%; power 
+96% 
+Pass 
+ 
+2.5 Tools and reproducibility 
+Cleaning and modelling are in Python (pandas, statsmodels 0.15, scikit-learn) with a fixed 
+random seed (2026) and raw-file hashes recorded at the start of every run. Every chart is saved 
+with the table it plots, and every number in this report is read from those output files. The 
+cleaned files are exported as flat CSVs for SAS Viya for Learners, where the reporting layer 
+(SAS Visual Analytics) and the model comparison (SAS Model Studio pipelines: logistic 
+regression, decision tree, forest, gradient boosting on the same folds) are built; the steps are 
+listed in Appendix E. 
+
+
+=== PAGE 8 ===
+ 
+8 
+3. Data exploration and preparation 
+3.1 What the four files actually are 
+Table 5. Inventory of the four files, as verified on load. 
+File 
+Rows 
+One row is… 
+Key fields 
+Outcome 
+Data Science Jobs 
+1,602 
+a company × job-title 
+summary (not a posting) 
+642 companies, 10 titles, min experience, 
+min/avg/max salary ("7.8L"), number of 
+postings 
+— 
+Analytics Jobs 
+15,841 
+one job posting 
+experience ("6-10 yrs"), designation, key 
+skills, location, salary band 
+salary band (6 
+levels) 
+JDS Skill Traits 
+139 
+one junior data scientist 
+5 skill scores, 1–5 
+high / low salary 
+hike (52.5% 
+high) 
+SDS Personality 
+Traits 
+161 
+one senior data scientist 
+Big Five trait scores (17–68) 
+high / low 
+success (52.8% 
+high) 
+ 
+Three facts about these files shaped the whole analysis. First, Analytics Jobs salary is banded, 
+so the market model must be ordinal. Second, Data Science Jobs has no skills and no city: skill 
+premiums can only come from Analytics Jobs, and the "93,005 postings" sometimes quoted 
+for this file is the sum of its num_of_jobs column, not a row count. Third, the junior and 
+senior files describe one company each, so their findings are a case study of one employer, not 
+"what companies reward". 
+3.2 Data issues found and how each was handled 
+Table 6. Audit log summary. Each fix was re-run with the fix undone to measure its effect. 
+Issue found 
+Rows 
+Handling 
+Measured effect on results 
+Exact duplicate postings (ignoring 
+the ID column) 
+1,001 
+Removed 
+Coding OR 1.331 → 1.482; dashboard 
+0.698 → 0.645; others within ±0.07 
+Most postings are not data roles 
+(Oracle, Java, SEO, accounting…) 
+11,691 
+Validated data-role filter 
+(§3.4) 
+Versus a title-only filter: maths & stats 
+OR 1.076 → 1.197, coding 1.388 → 
+1.482 
+Non-India locations (Canada, Dubai, 
+UAE, US…) 
+23 data 
+roles 
+Excluded 
+All area ORs change by ≤ 0.01 
+City spellings (Bangalore/Bengaluru, 
+Gurgaon/Gurugram, Delhi/Delhi 
+NCR, area suffixes) 
+928 raw 
+tokens 
+Normalised; first city = 
+primary; 16% multi-city 
+flagged 
+All area ORs change by ≤ 0.01 
+Skill lists truncated with "..." 
+87% of 
+rows 
+Trailing dots stripped; 
+truncation flag; re-check on 
+complete lists 
+Same direction for all five areas (§4.1.5) 
+job_type mostly missing, 
+inconsistent case 
+78% 
+missing 
+Not used 
+None 
+reference_no reused by different 
+companies (DS Jobs) 
+276 
+Kept; surrogate row key 
+None (no joins on it) 
+Implausible values in DS Jobs (min 
+exp ≥ 15; avg salary < 2 LPA) 
+3 + 12 
+Flagged, kept 
+Experience slope 16.51% → 16.01% per 
+year without them 
+IDs reused with different values 
+(JDS / SDS) 
+4 / 18 
+Kept; surrogate row key 
+CV AUC with/without: junior 0.905 / 
+0.898; senior 0.963 / 0.952 
+Stray spaces in SDS column names 
+(" extraversion") 
+2 columns 
+Stripped 
+None (prevents broken joins and SAS 
+imports) 
+Inconsistent rows (≥10 yrs 
+experience in 0–3 LPA band, etc.) 
+11 
+Logged, kept 
+Negligible 
+ 
+
+
+=== PAGE 9 ===
+ 
+9 
+3.3 Analytics Jobs: salary, experience and location 
+Experience strings ("6-10 yrs") parse cleanly for all 14,840 rows (minimum ≤ maximum in 
+every row). Salary bands rise steadily with experience (Figure 2): 56% of postings asking for 
+0–1 years sit in the lowest band, while 33% of 9+ year postings sit in the top band. This 
+monotone pattern is the main sanity check that the salary and experience fields mean what the 
+dictionary says. 
+ 
+Figure 2. Salary band by minimum experience (all de-duplicated postings). Rows sum to 100%. 
+Locations hold 928 distinct raw tokens, mostly spelling variants and area suffixes such as 
+"Bengaluru(Whitefield)". After normalisation, the seven largest cities cover most data-role 
+postings (Bengaluru 861, Mumbai 408, Gurugram 368, Delhi NCR 303, Pune 221, Hyderabad 
+168, Chennai); the rest are grouped as "Other" in the models. 
+Truncation is the most important limitation of this file. 87% of skill lists end in "...", so we 
+observe only the first few skills a recruiter typed. A skill being absent therefore does not mean 
+the job does not need it. We treat each skill flag as "named among the first listed skills" and re-
+check every market result on the 500 data-role postings with complete lists. 
+3.4 Separating data roles: a validated filter 
+Analytics Jobs mixes data roles with software, finance, marketing and operations jobs. Every 
+downstream number depends on which postings count as data roles, so the filter was built and 
+tested like a model. We drew random samples, labelled each posting by reading its title and 
+skills (rule: is the core work analysing data, statistical or ML modelling, data engineering, or 
+BI/reporting?), and scored the filter against those labels. Targets were set in advance: precision 
+≥ 0.90 and recall ≥ 0.80. 
+Table 7. Data-role filter validation. Round 3 used a sample the rule had never been tuned on. 
+Round 
+Sample 
+TP 
+FP 
+FN 
+Precision 
+Recall 
+What it taught us 
+1: title keywords only 
+200 random 35 
+4 
+8 
+0.90 
+0.81 
+Misses SAS, Power BI, MSBI, data-
+modelling titles; catches data-entry, 
+SEO, sales 
+2: refined title rule 
+200 fresh 
+30 
+1 
+11 
+0.97 
+0.73 
+Misses ETL/Hadoop engineers and 
+credit-risk modelling titles 
+3: title OR ≥3 core skills 
+(final) 
+200 
+untouched 
+48 
+4 
+11 
+0.92 
+0.81 
+Passes both targets; tuned on rounds 
+1–2 only 
+ 
+
+
+=== PAGE 10 ===
+ 
+10 
+The final rule keeps a posting if its title matches data-role terms or it lists at least three core 
+data skills, and it excludes data-entry, sales, SEO and administrator titles. It keeps 3,149 
+postings, of which 3,126 are in India (Figure 3). A second check on 100 random kept postings 
+found 95 genuine data roles, consistent with the measured precision. 
+ 
+Figure 3. From 15,841 raw rows to 3,126 analysable data-role postings in India. 
+Each kept posting is assigned to one of six role families by title (falling back to core skills when 
+the title is silent). A blind check on 95 data roles found 90.5% agreement (target ≥ 85%); most 
+disagreements were genuinely ambiguous titles such as "Big Data Analyst". Role family is the 
+key control in the market model, because pay differs sharply by family (Table 8, Figure 4). 
+Table 8. Role families among the 3,126 data-role postings. 
+Role family 
+Postings 
+Median salary band 
+Median min. 
+experience (yrs) 
+Data Analyst / Analytics 
+842 
+6–10 LPA 
+3 
+Data Scientist / ML 
+719 
+10–15 LPA 
+4 
+Data Engineer 
+526 
+10–15 LPA 
+5 
+Analytics Manager 
+451 
+15–25 LPA 
+7 
+BI / Reporting 
+429 
+6–10 LPA 
+3 
+Risk & Credit Modelling 
+159 
+10–15 LPA 
+5 
+ 
+The salary mix differs sharply between families (Figure 4). One in five BI/Reporting postings 
+sits in the lowest band (0–3 LPA), against 2% of Analytics Manager postings, 21% of which 
+reach the top band. This is why a skill that is common in BI/Reporting jobs can look "penalised" 
+unless role family is controlled. 
+ 
+Figure 4. Salary band mix by role family, data-role postings in India. 
+
+
+=== PAGE 11 ===
+ 
+11 
+3.5 Data Science Jobs: the title ladder 
+Data Science Jobs summarises 93,005 postings across 642 companies and ten titles. It is 
+concentrated: the ten largest employers account for 35% of postings. Weighted by postings, 
+median average salary climbs from ₹4.9L for Data Analysts to ₹20.2L for Senior Data 
+Scientists and ₹20.5L for Data Architects (Figure 5). Within each title family the "Senior" 
+version pays 57–72% more, and a weighted regression with title controls gives +16.5% salary 
+per year of minimum experience [14.7%, 18.4%]. Removing the 15 flagged rows changes 
+this by half a point (16.0%). 
+ 
+Figure 5. Median average salary by title, weighted by number of postings, with median minimum experience. 
+For our student user, this file also identifies fresher-friendly employers: companies posting 
+many roles with minimum experience of 0–1 years. The largest include Accenture, Genpact 
+and Cognizant (Business Analyst), and TCS, Cognizant and Accenture (Data Analyst); the full 
+list (Table 26, Appendix G) feeds the Skill Investment Card. 
+3.6 What employers list 
+After normalising synonyms (e.g. "ms sql", "mysql", "sql server" → "sql"; "advanced excel" 
+→ "excel"), 64 skills appear in at least 50 data-role postings — our minimum support for 
+estimating a premium. SQL (21%), Python, SAS, R, data analysis and machine learning (each 
+about 18%) lead the list (Figure 6). This is the "Listed" axis: what a student sees in job ads. 
+ 
+Figure 6. LISTED: the 20 skills named most often in data-role postings. 
+
+
+=== PAGE 12 ===
+ 
+12 
+Skills are also listed in bundles (Table 27, Appendix G). Machine learning appears with Python 
+in 313 postings — three times what independent listing would predict (lift 3.1) — and Hadoop 
+appears with Hive and Spark 8–9 times more often than chance. For a student this means skills 
+are bought together: the market rarely asks for machine learning without Python, or for Hadoop 
+without its ecosystem. 
+3.7 Linking posting skills to the five junior skill areas 
+The junior file measures five broad areas, while postings list specific tools. We linked them 
+with a keyword crosswalk. Because this is a judgement call, we built three versions: v1 
+(default) follows the JDS dictionary definitions (e.g. dashboard & storytelling includes 
+"visualisation, reporting and storytelling", so Excel, MIS and reporting count); strict keeps 
+only core tools (dashboard = Tableau, Power BI, Qlik, Spotfire, dashboard, visualisation, 
+storytelling); broad adds neighbouring terms. A hand check of 30 matched postings per area 
+under v1 confirmed the keywords match what they should. Table 9 shows how often each area 
+is listed under each version. 
+Table 9. Share of data-role postings listing each area, by crosswalk version. 
+Skill area 
+v1 (default) 
+Strict 
+Broad 
+Coding 
+57% 
+54% 
+59% 
+Big data 
+20% 
+16% 
+22% 
+Maths & stats 
+16% 
+14% 
+17% 
+AI / ML 
+25% 
+21% 
+30% 
+Dashboard & storytelling 
+21% 
+9% 
+25% 
+ 
+Dashboards & storytelling is the most sensitive area: it drops from 21% to 9% of postings when 
+Excel, MIS and reporting are excluded. Section 4.3 shows this matters. 
+3.8 Junior and senior files 
+Both files load cleanly: all JDS scores lie within 1–5 at one decimal; all SDS scores are integers 
+between 17 and 68; both outcomes are balanced (52.5% and 52.8% "high"). The largest 
+correlation between predictors is 0.45 in each file, so collinearity is not a concern (all variance 
+inflation factors < 1.5). Two features need care. JDS shows a strong ceiling effect: between 
+18% (big data) and 58% (dashboard & storytelling) of juniors score exactly 5.0, which 
+compresses differences at the top. And in both files some IDs are reused by different people; 
+keeping all rows changes the cross-validated AUC by less than 0.012. 
+Figure 7 shows the junior distributions by outcome. In every area except big data, the "5" 
+column is dominated by high-hike juniors — 84% of high-hike juniors score 5 in dashboard & 
+storytelling against 30% of low-hike juniors — so the ceiling is itself informative, but it limits 
+how finely the top can be ranked. Figure 8 shows the senior traits: high-success seniors score 
+markedly higher on extraversion, openness and conscientiousness, while neuroticism barely 
+differs. 
+
+
+=== PAGE 13 ===
+ 
+13 
+ 
+Figure 7. JDS: share of high-hike and low-hike juniors in each score range, by skill area. 
+ 
+Figure 8. SDS: trait scores of high- and low-success seniors. 
+4. Data analysis 
+4.1 Market price: what the market pays 
+4.1.1  Model 
+For the 3,126 Indian data-role postings, we model the salary band (six ordered levels) with a 
+proportional-odds logistic regression. Each of the five skill-area flags enters together, so each 
+premium is net of the others. Controls are added in three stages: M0 raw; M1 + minimum 
+experience (with a squared term) and city; M2 + role family. An odds ratio (OR) above 1 means 
+postings listing the skill are more likely to sit in a higher salary band. 
+
+
+=== PAGE 14 ===
+ 
+14 
+4.1.2  The premium waterfall 
+ 
+Figure 9. PAID: skill-area premiums as controls are added (95% confidence intervals). 
+Table 10. Market premiums by skill area. The last column comes from a separate interval regression on log-
+salary. 
+Skill area 
+M0 raw 
+OR 
+M1 OR 
+M2 OR [95% CI] 
+p (M2) 
+Interval regression: salary 
+premium 
+Coding 
+1.25 
+1.49 
+1.48 [1.29, 1.70] 
+0.000 
++12.5% [+8.1, +17.0] 
+Big data 
+1.44 
+1.26 
+1.37 [1.12, 1.67] 
+0.002 
++11.0% [+4.7, +17.7] 
+Maths & stats 
+1.36 
+1.25 
+1.20 [1.00, 1.43] 
+0.051 
++5.0% [-0.3, +10.7] 
+AI / ML 
+1.45 
+1.68 
+1.18 [0.97, 1.44] 
+0.091 
++5.3% [-0.4, +11.4] 
+Dashboard & storytelling 
+0.46 
+0.53 
+0.65 [0.54, 0.77] 
+0.000 
+-11.6% [-16.0, -6.9] 
+ 
+Three patterns stand out. Coding and big data carry robust premiums of about +12.5% and 
++11% in salary within the same role family. AI/ML has the largest premium after experience 
+and city (OR 1.68) but most of it disappears once role family is added (1.18, interval crossing 
+1): AI/ML pays because ML jobs are better-paid jobs, not because the skill adds pay within a 
+comparable job. Dashboards & storytelling looks penalised (OR 0.65, about −11.6% salary) 
+— Section 4.3 shows this is driven by how the area is defined. 
+4.1.3  Individual skills 
+Fitting M2 to each of the 64 skills with at least 50 postings and controlling the false-discovery 
+rate leaves 13 skills with a reliable premium or penalty (Figure 10; full table in Appendix D). 
+The strongest premiums are for statistical depth — statistical analysis (OR 2.42), logistic 
+regression (2.11), model development (2.01) — and for algorithms and programming 
+(algorithms 2.20, C++ 1.89, Java 1.60, R 1.47, SAS 1.37, Python 1.36). Tableau carries a 
+premium (1.77), while Excel (0.60) and MIS (0.15) carry penalties. Several heavily listed skills 
+— SQL, machine learning, Hadoop, big data, deep learning — do not survive the correction, 
+which supports H1: being listed often and being paid more are different things. 
+
+
+=== PAGE 15 ===
+ 
+15 
+ 
+Figure 10. PAID: individual skills whose premium or penalty survives Benjamini–Hochberg control (q < 0.10), 
+with n postings. 
+4.1.4  Career stage 
+Fitting M2 separately to postings needing 0–3 years (n = 1,337) and 5+ years (n = 1,412) shows 
+that what pays depends on career stage (Figure 11, Table 11), supporting H2. At entry level, 
+coding (1.89), big data (1.71) and maths & statistics (1.43) all carry premiums, while AI/ML 
+carries none (0.99). At 5+ years the picture flattens: only coding keeps a clear premium. 
+ 
+Figure 11. PAID by career stage: entry-level (0–3 years) vs experienced (5+ years) postings. 
+Table 11. Market premiums by career stage, full controls. 
+Skill area 
+0–3 years: OR [95% CI] 
+5+ years: OR [95% CI] 
+Coding 
+1.89 [1.52, 2.35] 
+1.25 [1.02, 1.54] 
+Big data 
+1.71 [1.26, 2.31] 
+0.98 [0.73, 1.32] 
+Maths & stats 
+1.43 [1.07, 1.90] 
+1.01 [0.78, 1.32] 
+AI / ML 
+0.99 [0.74, 1.33] 
+1.18 [0.88, 1.59] 
+Dashboard & storytelling 
+0.64 [0.49, 0.82] 
+0.60 [0.45, 0.81] 
+
+
+=== PAGE 16 ===
+ 
+16 
+ 
+The AI/ML result at entry level holds under all three crosswalks (OR 0.99, 1.10 and 1.19 for 
+v1, strict and broad; none clearly above 1). This is the headline message for students: AI/ML 
+skills open the door to better-paid role families, but at entry level they do not earn a 
+premium over peers in the same kind of role. 
+Table 12. Entry-level (0–3 years) market odds ratios under each crosswalk version. 
+Skill area 
+v1 (default) 
+Strict 
+Broad 
+Coding 
+1.89 
+1.68 
+1.81 
+Big data 
+1.71 
+1.60 
+1.51 
+Maths & stats 
+1.43 
+1.64 
+1.29 
+AI / ML 
+0.99 
+1.10 
+1.19 
+Dashboard & storytelling 
+0.64 
+1.61 
+0.73 
+ 
+Table 12 also shows the one area that changes sign with the crosswalk at entry level: dashboards 
+& storytelling, whose odds ratio is 0.64 when Excel and MIS reporting are included and 1.61 
+when only core visualisation tools are counted. 
+4.1.5  Robustness of the market results 
+Table 13. Robustness checks on the market model. 
+Check 
+What was done 
+Result 
+Proportional-odds 
+assumption 
+Separate binary logits at each of the 5 
+cut points 
+Directions hold at every cut for coding, big data and 
+dashboards. Coding's effect is largest at the bottom (OR 
+3.13 for leaving the 0–3 LPA band) and smaller at the 
+top (1.14): coding mainly lifts juniors out of the lowest 
+bands 
+Alternative model 
+Interval regression on log-salary with 
+band edges 
+Same sign for all five areas 
+Complete skill lists only (n 
+= 500) 
+Re-fit M2 on postings without "..." 
+truncation 
+Same sign for all five; intervals wider (e.g. coding 1.34 
+[0.94, 1.91]; dashboard 0.51 [0.31, 0.83]) 
+Null test 
+Shuffle the AI/ML flag 200 times 
+Shuffled ORs centre on 0.995 (95% range 0.87–1.17): 
+the model does not invent premiums 
+Cleaning choices 
+Undo de-duplication, non-India 
+exclusion, city normalisation, filter 
+Area ORs move by at most 0.15 (coding without de-
+duplication); no sign changes (Table 6) 
+ 
+Separate models for each cut point (Table 28, Appendix G) show where in the pay scale each 
+skill matters. Coding and maths & statistics mainly lift postings out of the bottom bands; 
+AI/ML matters at the very bottom and the very top but not in the middle — consistent with 
+AI/ML being a marker of specialist, senior roles rather than a general premium. 
+4.2 Internal reward: what one company rewards 
+For the 139 juniors, a logistic regression on the five standardised skill scores predicts a high 
+salary hike with a cross-validated AUC of 0.90 ± 0.05 (5 folds × 20 repeats). A permutation 
+test confirms the signal is real: across 500 label shuffles the 95th-percentile AUC is 0.61, and 
+the observed value gives p = 0.002. Predictions are well calibrated (Brier score 0.118), and a 
+depth-3 decision tree reaches 0.82, a little lower, with readable rules: juniors scoring above 
+4.15 in dashboard & storytelling, above 3.55 in maths & stats and above 4.65 in coding had a 
+high hike in 51 of 57 cases. 
+
+
+=== PAGE 17 ===
+ 
+17 
+ 
+Figure 12. REWARDED: odds ratio of a high hike per standard deviation of each skill score, with 95% BCa 
+intervals, the share of 2,000 resamples in which the skill ranks first, and the ceiling share. 
+Table 14. Internal reward for each junior skill area (multivariable model). 
+Skill area 
+Mean score 
+high / low hike 
+OR per SD [95% 
+BCa] 
+Ranked 
+1st 
+Sign stable Single-skill AUC 
+[95% BCa] 
+At score 5 
+Maths & stats 
+4.71 / 3.83 
+4.62 [2.01, 9.90] 
+65% 
+100.0% 
+0.78 [0.69, 0.84] 
+41% 
+Dashboard & storytelling 
+4.85 / 3.81 
+3.52 [1.26, 9.68] 
+29% 
+100.0% 
+0.79 [0.72, 0.86] 
+58% 
+Big data 
+3.94 / 3.75 
+2.32 [1.12, 4.92] 
+0% 
+99.7% 
+0.56 [0.47, 0.66] 
+18% 
+AI / ML 
+4.82 / 4.28 
+2.32 [0.92, 4.61] 
+4% 
+99.3% 
+0.68 [0.59, 0.76] 
+49% 
+Coding 
+4.64 / 3.85 
+1.72 [0.84, 3.86] 
+1% 
+93.3% 
+0.74 [0.67, 0.81] 
+45% 
+ 
+Maths & statistics is the most consistently rewarded skill (OR 4.6 per SD; ranked first in 
+65% of resamples), followed by dashboard & storytelling (3.5; first in 29%). Big data is also 
+clearly rewarded once the others are held constant, even though on its own it barely separates 
+high from low (AUC 0.56). Coding and AI/ML point the same way, but their intervals include 
+1, partly because 45–49% of juniors are already at the maximum score in those areas. Adding 
+"at ceiling" indicators keeps maths & stats first but swaps the order below it, so we treat only 
+the first place as firm. 
+Calibration (Table 29, Appendix G) is good in the upper three quintiles; at the bottom the model 
+is slightly over-confident, so a "very unlikely" prediction should be read as "unlikely". 
+4.2.1  Generalist or specialist? 
+A common student dilemma is whether to be good at everything or excellent at one thing. The 
+weakest of a junior's five scores predicts a high hike far better than the strongest (Figure 13): 
+AUC 0.85 vs 0.59, a paired-bootstrap difference of 0.26 [0.18, 0.35]. But the average of the 
+five predicts best of all (0.92), and once the average is in the model, the spread of scores adds 
+nothing (OR 0.76 per SD of spread, [0.38, 1.54]). The honest reading is "don't leave an area 
+weak", not "be a generalist": rewards track the overall level, and a single weak area drags it 
+down. 
+
+
+=== PAGE 18 ===
+ 
+18 
+ 
+Figure 13. How well three summaries of a junior's five scores predict a high hike. 
+4.3 The bridge: Listed vs Paid vs Rewarded 
+Table 15 places the three measurements side by side for each area, with the market premium 
+shown under all three crosswalks (Figure 14). An area is "paid" when its 95% interval lies 
+above 1, and "rewarded" when its BCa interval lies above 1. We call a disagreement real only 
+if it appears under at least two of the three crosswalks. 
+ 
+Figure 14. Left: market premium under three crosswalk versions. Right: internal reward for juniors (blue = 
+interval excludes 1). 
+Table 15. Listed vs Paid vs Rewarded, with 95% intervals. 
+Skill area 
+Listed 
+Paid: v1 
+Paid: strict 
+Paid: broad 
+Rewarded (OR/SD) 
+Coding 
+57% 
+1.48 [1.29, 1.70] 
+1.37 [1.20, 1.58] 
+1.45 [1.26, 1.66] 
+1.7 [0.8, 3.9] 
+Big data 
+20% 
+1.37 [1.12, 1.67] 
+1.31 [1.07, 1.61] 
+1.33 [1.10, 1.62] 
+2.3 [1.1, 4.9] 
+Maths & stats 
+16% 
+1.20 [1.00, 1.43] 
+1.39 [1.15, 1.69] 
+1.15 [0.97, 1.38] 
+4.6 [2.0, 9.9] 
+AI / ML 
+25% 
+1.18 [0.97, 1.44] 
+1.32 [1.07, 1.62] 
+1.34 [1.10, 1.62] 
+2.3 [0.9, 4.6] 
+Dashboard & storytelling 
+21% 
+0.65 [0.54, 0.77] 
+1.06 [0.84, 1.34] 
+0.72 [0.61, 0.86] 
+3.5 [1.3, 9.7] 
+ 
+
+
+=== PAGE 19 ===
+ 
+19 
+Table 16. Verdict per skill area. Supports H3. 
+Skill area 
+Market 
+Company 
+Verdict (robust across crosswalks) 
+Big data 
+Paid in 3/3 
+Rewarded 
+Agree — paid and rewarded 
+Coding 
+Paid in 3/3 
+Not clearly 
+Paid more than rewarded — the 
+company's juniors are mostly at the 
+ceiling 
+Maths & stats 
+Paid in 1/3 
+Rewarded 
+(strongest) 
+Rewarded more than paid 
+AI / ML 
+Paid in 2/3 (overall); not at 
+entry level in any 
+Not clearly 
+Weakest case for a junior to prioritise 
+Dashboard & 
+storytelling 
+Penalised in 2/3; neutral 
+under strict 
+Rewarded 
+Rewarded, not paid — the market 
+penalty is not robust 
+ 
+The rank correlation between Paid and Rewarded across the five areas is −0.5 (v1), 0.0 (strict) 
+and −0.9 (broad), with bootstrap intervals spanning roughly −1 to +0.3. With only five areas 
+we make no significance claim on the correlation itself; the evidence is the per-area verdicts 
+above. Together they say that what the market pays and what an employer rewards do not 
+line up, and the two biggest gaps are maths & statistics and dashboards & storytelling — both 
+undervalued by the market relative to their internal reward. 
+Why the crosswalk check mattered. Under the default mapping, dashboards & 
+storytelling looked like a market penalty (OR 0.65). With core visualisation tools 
+only, the penalty vanishes (1.06) and at entry level becomes a premium (1.61). The 
+"penalty" came from Excel and MIS reporting jobs, not from Tableau or Power BI. 
+Without this check we would have told students the opposite of the truth. 
+4.4 Senior profile: career-stage contrast and a label check 
+For the 161 seniors, a linear logistic model on the five standardised traits gives a cross-validated 
+AUC of 0.963 (permutation p = 0.002). Openness to experience and conscientiousness have by 
+far the largest effects (Table 17). 
+Table 17. Senior success: linear logistic model on standardised traits. 
+Trait 
+Mean high / low 
+success 
+OR per SD [95% CI] 
+p 
+Single-trait 
+AUC 
+Neuroticism 
+36.1 / 36.3 
+3.9 [1.7, 9.0] 
+0.001 
+0.53 
+Extraversion 
+48.9 / 36.9 
+3.9 [1.5, 10.2] 
+0.005 
+0.78 
+Openness to experience 
+48.5 / 33.3 
+20.8 [5.8, 74.8] 
+0.000 
+0.88 
+Agreeableness 
+47.7 / 41.1 
+2.5 [1.0, 6.2] 
+0.056 
+0.65 
+Conscientiousness 
+53.7 / 35.7 
+26.5 [5.8, 120.9] 
+0.000 
+0.88 
+ 
+4.4.1  Curved effects (H4) 
+Adding squared terms makes the unpenalised model separate the classes perfectly (training 
+accuracy 100%, p-values ≈ 1), so the textbook likelihood-ratio test is invalid here. With a ridge 
+penalty, curvature still lifts cross-validated AUC from 0.967 to 0.998, and the squared terms 
+are negative for extraversion, openness and agreeableness: higher is better, with diminishing 
+returns at the top. H4 is supported, with the caveat below. 
+
+
+=== PAGE 20 ===
+ 
+20 
+4.4.2  Is the label reproducible from the scores? 
+Several signs point to a success label constructed from the trait scores themselves. A single 
+cut-off on the plain total of all five scores classifies 92.5% of seniors correctly (90.9% when 
+the cut-off is chosen inside cross-validation), and the total alone matches the full model's AUC 
+(0.961 vs 0.963). Neuroticism, described as a negative trait, has no relationship with success 
+on its own (AUC 0.53) yet a positive weight inside the model (OR 3.9) — exactly what happens 
+if the label was built from an unweighted total. Finally, success rises in near-steps with the 
+number of traits above the median (Figure 15): from 6% with none to 97% with four and 100% 
+with five. 
+ 
+Figure 15. Senior high-success share by number of traits above the group median. 
+We therefore report the senior model as a finding about the data: the label behaves like a 
+near-mechanical function of the scores, so a 0.96–0.998 AUC says more about how the label 
+was built than about real-world success. We use the file only for the career-stage contrast — 
+juniors are rewarded for technical skills, seniors' success tracks how they think and work 
+(openness, conscientiousness) — and never as a personality screen. 
+Table 18. Cross-validated performance of all people models (5 folds × 20 repeats). 
+File 
+Model 
+CV AUC (mean ± 
+SD) 
+Note 
+JDS 
+Logistic, 5 skills 
+0.905 ± 0.052 
+Permutation p = 0.002; null 95th percentile 
+0.61 
+JDS 
+Decision tree, depth 3 
+0.818 ± 0.066 
+Readable rules; lower accuracy 
+JDS 
+Average of five scores only 
+0.917 (AUC) 
+The overall level carries most of the signal 
+SDS 
+Logistic, linear 
+0.963 
+Permutation p = 0.002 
+SDS 
+Ridge logistic, linear 
+0.967 ± 0.026 
+ 
+SDS 
+Ridge logistic, with squared terms 
+0.998 ± 0.003 
+Unpenalised version separates perfectly 
+SDS 
+Total of five scores only 
+0.961 
+Single cut-off: 92.5% accurate (90.9% in 
+CV) 
+SDS 
+Decision tree, depth 4 
+0.946 
+ 
+ 
+
+
+=== PAGE 21 ===
+ 
+21 
+4.5 The Skill Investment Card 
+4.5.1  Algorithm 
+Input: the student's self-rating (1–5) in each area, target role family and experience band. For 
+each area: the gap is the distance from the student's rating to the typical high-hike junior 
+(median: 5.0 in four areas, 3.8 in big data). The value of closing that gap combines (a) the 
+internal reward per rating point from 2,000 bootstrap fits of the junior model and (b) the market 
+premium for that area at the student's career stage, drawn from all three crosswalks so the 
+mapping uncertainty enters the interval. The two halves are scaled to a common range and 
+weighted equally. Output: areas ranked by median value with 80% intervals and the share of 
+draws in which each area is the best option. 
+Decision rules. Recommend when one area is best in at least 60% of draws; Tie when it is not; 
+No gap when the student is within 0.3 points of the high-hike profile everywhere; Abstain when 
+any rating is below the lowest observed score (2.2) or the profile is unlike any junior in the data 
+(Mahalanobis distance above the 99th percentile). 
+4.5.2  Verification 
+Table 19. Tests of the Skill Investment Card. 
+Test 
+Expected 
+Result 
+Profile equal to the high-hike median 
+No gap 
+Pass 
+Weak only in maths & stats 
+Maths & stats ranked first 
+Pass 
+Weak only in coding 
+Coding ranked first 
+Pass 
+A rating below the observed range (2.0) 
+Abstain 
+Pass 
+Unusual profile (5, 2.3, 5, 2.3, 5) 
+Abstain 
+Pass 
+Monotonicity: lowering a rating never makes that area 
+less recommended 
+0 violations 
+0 violations in 1,000 random 
+profiles 
+Behaviour on the 66 low-hike juniors 
+Mostly decisive, some ties 
+46 recommend, 17 tie, 2 abstain, 1 
+no gap 
+ 
+ 
+4.5.3  Example cards 
+Figure 16 shows two student profiles. Asha (final year, strong coder, weak in statistics and 
+storytelling, aiming for a Data Analyst role) is advised to invest in maths & statistics, best in 
+89% of draws. Dashboards & storytelling is second with a wide interval, reflecting the 
+crosswalk uncertainty in the market. Rohan (ML enthusiast, weak communication, aiming for 
+Data Scientist roles) is also pointed to maths & statistics (61%) rather than more AI/ML, 
+consistent with the absent entry-level AI/ML premium. Meera, within 0.3 points of the high-
+hike profile everywhere, gets "no gap". Kabir, whose coding self-rating (1.5) is below anything 
+in the data, gets "not enough evidence" rather than a guess. 
+
+
+=== PAGE 22 ===
+ 
+22 
+ 
+Figure 16. Skill Investment Card output for two personas: median value score, 80% interval, and share of draws 
+in which each area is the best option. 
+Table 20. Skill Investment Card decisions for four student personas. 
+Persona 
+Self-ratings (big data, maths, coding, 
+AI/ML, dashboards) 
+Target 
+Card decision 
+Asha 
+3.2, 3.0, 4.6, 4.2, 3.0 
+Data Analyst, 0–3 yrs 
+Recommend maths & stats (best in 
+89%); dashboards second 
+Rohan 
+3.6, 3.8, 4.2, 4.9, 2.8 
+Data Scientist / ML, 0–3 
+yrs 
+Recommend maths & stats (61%); 
+dashboards close second (37%) 
+Meera 
+4.6, 4.9, 4.9, 4.9, 4.8 
+Data Analyst, 0–3 yrs 
+No gap: within 0.3 of the high-hike 
+profile everywhere 
+Kabir 
+3.5, 3.5, 1.5, 3.5, 3.5 
+Data Engineer, 0–3 yrs 
+Abstain: coding rating below 
+anything in the data 
+ 
+5. Results and conclusions 
+5.1 Answer to the core question 
+Table 21. The core question, answered. 
+Part of the question 
+Answer 
+How sure 
+What does the market 
+pay for? 
+Coding (+12.5%) and big data (+11%) within role 
+family; statistical depth (statistical analysis, logistic 
+regression, model development) and programming at 
+skill level. At entry level: coding, big data, maths & stats 
+High: survives 3 crosswalks, 
+interval regression, complete-list 
+subset, FDR control 
+What does one company 
+reward? 
+Maths & statistics most, then dashboards & storytelling 
+and big data; overall level matters more than any one 
+spike 
+Moderate: n = 139, one company; 
+BCa intervals wide but first place 
+stable (65%) 
+Where do they disagree? Maths & stats and dashboards & storytelling are 
+rewarded more than paid; coding is paid more than 
+rewarded; AI/ML is neither paid at entry level nor clearly 
+rewarded 
+Disagreements counted only if 
+they hold in ≥ 2 of 3 crosswalks 
+How sure are we? 
+Every estimate carries an interval; the card abstains or 
+reports ties when evidence is thin 
+17 of 66 low-hike juniors receive 
+"tie", not a forced answer 
+
+
+=== PAGE 23 ===
+ 
+23 
+ 
+5.2 Hypotheses 
+Table 22. Hypothesis outcomes. 
+Hypothesis 
+Outcome 
+Evidence 
+H1: most listed ≠ most paid 
+Supported 
+SQL, machine learning, Hadoop and big data are among the most 
+listed but not significant after FDR control; less-listed statistical 
+skills carry the largest premiums 
+H2: entry vs experienced 
+differ 
+Supported 
+Big data and maths & stats pay at 0–3 years, not at 5+; AI/ML pays 
+at neither stage clearly, and not at all at entry level 
+H3: robust Paid–Rewarded 
+disagreement 
+Supported 
+Four of five areas disagree in ≥ 2 of 3 crosswalks 
+H4: curved senior effects 
+Supported, with 
+caveat 
+Penalised CV AUC 0.967 → 0.998 with negative squared terms; 
+but the label is near-mechanical 
+ 
+5.3 Conclusions 
+1. Demand is not value. The most listed skills are not the best paid within comparable jobs. 
+Students reading skill lists are seeing demand, not price. 
+2. For a fresher, AI/ML is a door, not a raise. It moves you into better-paid role families, 
+but within those families entry-level AI/ML adds no measurable premium. Coding, data 
+engineering and statistics do. 
+3. Foundations are undervalued by the market but rewarded after hiring. Maths & 
+statistics is the strongest internal reward driver yet only modestly priced in postings — 
+the clearest case where a student's investment pays after hiring more than the job ad 
+suggests. 
+4. "Dashboards" means two different things. Real visualisation tools pay; Excel and MIS 
+reporting jobs do not. Storytelling is rewarded internally either way. 
+5. Close weak areas before deepening strong ones. Internal rewards follow the overall 
+level of skills, so one weak area costs more than one extra-strong area earns. 
+6. Check labels before trusting models. The senior label is reproducible from its inputs; 
+the high AUC is a property of the data, not evidence of a predictive tool. 
+6. Implications 
+6.1 For students and early-career analysts 
+• Use the Skill Investment Card, not the skill-list headline. It shows the gap, the value 
+of closing it, and how sure the estimate is. 
+• Do not skip statistics for a shortcut into AI/ML. Statistical depth (regression, model 
+development, statistical analysis) carries the largest skill premiums and the strongest 
+internal reward. 
+• Learn a real visualisation tool, not just Excel. Tableau/Power BI-type skills pay at 
+entry level; Excel/MIS reporting roles sit in lower bands. 
+• Coding is the safest single investment for a fresher — the largest and most robust 
+entry-level premium (OR 1.89). 
+• Fix the weakest area first. A balanced profile without a weak spot is what the employer 
+in our data rewarded. 
+
+
+=== PAGE 24 ===
+ 
+24 
+• Target fresher-friendly employers deliberately. The ten largest posters account for 
+35% of postings; several hire at 0–1 years in large numbers. 
+Table 23. Student action guide derived from the findings. 
+If you are… 
+Prioritise 
+Because 
+Strong in coding, weak in statistics Maths & statistics 
+Strongest internal reward; premium at entry 
+level (1.43) 
+Aiming for ML roles straight away Statistics and coding before more 
+AI/ML 
+No entry-level AI/ML premium within role 
+family 
+Comfortable with Excel reporting 
+A real BI tool (Tableau / Power BI) 
+plus storytelling 
+Core tools pay at entry level (1.61); 
+Excel/MIS do not (0.60 / 0.15) 
+Interested in data engineering 
+Big data with its ecosystem (Hadoop 
++ Spark + Hive) 
+Premium at entry level (1.71); skills listed as 
+bundles 
+Balanced but nowhere near the top Your weakest area first 
+Rewards follow the overall level; a weak 
+area drags it down 
+ 
+6.2 For universities 
+• Keep, and make visible, a strong statistics and modelling core; the evidence suggests it is 
+undervalued by students reading job ads. 
+• Teach visualisation with industry tools and pair it with storytelling practice, rather than 
+spreadsheet reporting alone. 
+• Publish skill guidance with uncertainty and career stage; "AI/ML is in demand" is true 
+but incomplete advice for a fresher. 
+6.3 For employers and recruiters 
+• Job descriptions that list AI/ML for entry-level roles without paying for it attract 
+mismatched expectations; listing statistics and storytelling where they are rewarded 
+internally would signal more accurately. 
+• Internal reward systems that track overall skill level (as here) favour balanced profiles; 
+communicating that to juniors would focus their development. 
+• Labels used for "success" should be checked for construction from their own inputs 
+before being used in any analysis. 
+6.4 Limitations 
+• Association, not causation. Premiums are what postings with a skill offer in comparable 
+jobs, not the raise a person would get from learning it. 
+• Truncated skill lists (87%) mean skill flags capture only the first-named skills; the 
+complete-list subset agrees in direction but is small (n = 500). 
+• One company each for the junior and senior files; their findings are a case study, not 
+industry-wide. 
+• Self-ratings vs measured scores. The card asks students to rate themselves on a scale 
+the company measured by tests; ratings may be optimistic. 
+• Single-reviewer labelling. The data-role and role-family gold samples were labelled by 
+one reviewer; an independent second labelling and agreement statistic would strengthen 
+the filter validation. 
+• Crosswalk judgement. Three versions reduce, but do not remove, the subjectivity of 
+mapping tools to areas. 
+
+
+=== PAGE 25 ===
+ 
+25 
+6.5 Next steps 
+With more time and data access: validate the card prospectively (ask students to rate themselves 
+and follow their outcomes), add complete skill lists from job descriptions, repeat the junior 
+analysis across several employers, and extend the market model to time trends using posting 
+dates. 
+6.6 References 
+[1] Naukri. Naukri JobSpeak: White-collar hiring remains stable in May; AI/ML roles and 
+Insurance sector continue to lead. 1 June 2026. https://www.naukri.com/blog/naukri-jobspeak-
+may-2026-white-collar-hiring-remains-stable-in-may-ai-ml-roles-and-insurance-sector-
+continue-to-lead/ 
+[2] SAS Institute. SAS CU Hackathon: Problem Context Brief, Data Description Document. 
+2026. 
+
+
+=== PAGE 26 ===
+ 
+26 
+Appendix 
+A. Audit log (row-level) 
+Table 24. Row-level audit log produced by the pipeline. 
+Step 
+Rows in 
+Rows out 
+Note 
+DS.surrogate_key 
+1,602 
+1,602 
+276 rows share a reference_no with another company; row key added 
+DS.flags 
+1,602 
+1,602 
+Flagged 3 with min experience ≥ 15 and 12 with average salary < 2 LPA 
+(kept) 
+AJ.dedup 
+15,841 
+14,840 
+Exact duplicates ignoring s_no removed 
+AJ.skills 
+14,840 
+14,840 
+87% of skill lists end in "..." (truncated); trailing dots stripped 
+AJ.data_role_v3 
+14,840 
+3,149 
+Validated title-or-skills filter (precision 0.92, recall 0.81 on an untouched 
+sample) 
+AJ.non_india 
+3,149 
+3,126 
+Non-India data postings excluded 
+JDS.ids 
+139 
+139 
+4 rows share an id with different values; kept, row key added 
+SDS.columns 
+161 
+161 
+Stray spaces stripped from column names 
+SDS.ids 
+161 
+161 
+18 rows share an id with different values; kept, row key added 
+ 
+B. Known-answer and null tests 
+All tests use seed 2026. Ordinal model: latent log-salary = log 4 + 0.12 × experience + 0.25 
+× skill + logistic noise (scale 0.35), banded at 3, 6, 10, 15 and 25 LPA; 200 replications of n = 
+2,700. Bootstrap: real JDS predictors, standardised, with planted coefficients (0, 0.8, 0.6, 0.3, 
+0.9); 60 replications × 400 resamples. Permutation: 200 null datasets of n = 150; one dataset 
+with a logistic effect of 1.0. BH: 40 uniform and 10 near-zero p-values, 300 replications. 
+Curvature LRT: n = 161, five standard-normal traits, quadratic term 0 or −0.8 on one trait; 
+200 replications each. Market null test: the AI/ML flag shuffled 200 times within the real 
+data. 
+C. Data-role labelling protocol 
+Label "data role" if the core work of the job is analysing data, building statistical or machine-
+learning models, data engineering (ETL, data warehousing, big-data platforms) or BI/reporting 
+development. Label "not a data role" for software development, testing, finance, 
+marketing/SEO, sales, operations, administration of infrastructure (including database and 
+Hadoop administrators) and data entry. Titles such as "Business Analyst" count only when the 
+listed skills show analytical work (statistics, SQL, BI tools) rather than requirements gathering. 
+Three rounds of 200 random postings were labelled without seeing the filter's decision; round 
+3 was drawn only after the filter was frozen. Role families were checked on a further 100 kept 
+postings (95 data roles; 86 assigned to the same family as the reviewer, 90.5%). 
+D. Market premium for every skill with ≥ 50 postings 
+Table 25. All 64 skills, sorted by M2 odds ratio. 
+Skill 
+n 
+Raw OR 
+M2 OR [95% CI] 
+q (BH) 
+Survives 
+statistical analysis 
+51 
+1.65 
+2.42 [1.48, 3.96] 
+0.004 
+yes 
+algorithms 
+73 
+2.19 
+2.20 [1.42, 3.41] 
+0.004 
+yes 
+logistic regression 
+67 
+2.28 
+2.11 [1.37, 3.25] 
+0.005 
+yes 
+model development 
+72 
+3.08 
+2.01 [1.26, 3.20] 
+0.020 
+yes 
+c++ 
+68 
+2.16 
+1.89 [1.20, 2.96] 
+0.031 
+yes 
+tableau 
+146 
+1.13 
+1.77 [1.30, 2.42] 
+0.004 
+yes 
+java 
+223 
+1.78 
+1.60 [1.23, 2.06] 
+0.004 
+yes 
+
+
+=== PAGE 27 ===
+ 
+27 
+Skill 
+n 
+Raw OR 
+M2 OR [95% CI] 
+q (BH) 
+Survives 
+c 
+50 
+2.25 
+1.58 [0.94, 2.65] 
+0.250 
+ 
+r 
+568 
+1.92 
+1.47 [1.24, 1.76] 
+0.000 
+yes 
+statistical modeling 
+114 
+2.01 
+1.47 [1.04, 2.07] 
+0.106 
+ 
+advanced analytics 
+52 
+1.76 
+1.43 [0.86, 2.36] 
+0.344 
+ 
+nlp 
+160 
+1.73 
+1.40 [1.02, 1.92] 
+0.135 
+ 
+sas sql 
+69 
+1.27 
+1.38 [0.90, 2.12] 
+0.312 
+ 
+data warehousing 
+92 
+1.14 
+1.37 [0.93, 2.00] 
+0.271 
+ 
+sas 
+573 
+1.54 
+1.37 [1.15, 1.63] 
+0.004 
+yes 
+etl 
+98 
+1.12 
+1.36 [0.94, 1.99] 
+0.271 
+ 
+python 
+573 
+1.32 
+1.36 [1.14, 1.63] 
+0.005 
+yes 
+business analysis 
+107 
+0.72 
+1.33 [0.94, 1.89] 
+0.271 
+ 
+project management 
+92 
+1.68 
+1.31 [0.90, 1.93] 
+0.340 
+ 
+segmentation 
+56 
+2.28 
+1.31 [0.80, 2.14] 
+0.473 
+ 
+business intelligence 
+134 
+0.73 
+1.30 [0.95, 1.79] 
+0.271 
+ 
+spark 
+217 
+1.60 
+1.28 [0.97, 1.69] 
+0.247 
+ 
+nosql 
+99 
+1.38 
+1.27 [0.87, 1.84] 
+0.396 
+ 
+machine learning 
+558 
+1.72 
+1.26 [1.03, 1.54] 
+0.106 
+ 
+data mining 
+186 
+1.19 
+1.25 [0.95, 1.65] 
+0.277 
+ 
+scala 
+95 
+1.31 
+1.24 [0.84, 1.83] 
+0.463 
+ 
+deep learning 
+136 
+1.73 
+1.21 [0.86, 1.70] 
+0.463 
+ 
+sql 
+652 
+0.83 
+1.20 [1.02, 1.40] 
+0.106 
+ 
+data visualization 
+61 
+0.73 
+1.16 [0.73, 1.85] 
+0.750 
+ 
+vba 
+54 
+0.70 
+1.15 [0.71, 1.88] 
+0.762 
+ 
+hbase 
+68 
+1.16 
+1.12 [0.72, 1.74] 
+0.794 
+ 
+mapreduce 
+60 
+1.50 
+1.12 [0.69, 1.82] 
+0.811 
+ 
+analytics 
+522 
+1.12 
+1.11 [0.93, 1.32] 
+0.459 
+ 
+marketing analytics 
+63 
+1.16 
+1.11 [0.70, 1.74] 
+0.819 
+ 
+data science 
+220 
+1.62 
+1.10 [0.83, 1.45] 
+0.736 
+ 
+hadoop 
+239 
+1.39 
+1.08 [0.83, 1.41] 
+0.762 
+ 
+statistics 
+93 
+0.98 
+1.06 [0.72, 1.56] 
+0.897 
+ 
+big data 
+209 
+1.47 
+1.05 [0.80, 1.39] 
+0.870 
+ 
+data modeling 
+89 
+1.17 
+1.04 [0.70, 1.53] 
+0.946 
+ 
+neural networks 
+54 
+2.15 
+1.03 [0.62, 1.72] 
+0.969 
+ 
+oracle 
+54 
+0.97 
+1.03 [0.64, 1.65] 
+0.969 
+ 
+business analytics 
+60 
+0.75 
+1.02 [0.64, 1.61] 
+0.979 
+ 
+linear regression 
+60 
+1.75 
+1.01 [0.62, 1.65] 
+0.979 
+ 
+banking 
+50 
+1.75 
+1.01 [0.59, 1.73] 
+0.979 
+ 
+hdfs 
+53 
+1.23 
+0.98 [0.59, 1.64] 
+0.979 
+ 
+
+
+=== PAGE 28 ===
+ 
+28 
+Skill 
+n 
+Raw OR 
+M2 OR [95% CI] 
+q (BH) 
+Survives 
+text mining 
+73 
+2.10 
+0.97 [0.63, 1.48] 
+0.969 
+ 
+predictive modeling 
+150 
+1.39 
+0.96 [0.70, 1.31] 
+0.912 
+ 
+hive 
+164 
+1.31 
+0.95 [0.70, 1.29] 
+0.897 
+ 
+predictive analytics 
+126 
+1.30 
+0.90 [0.64, 1.27] 
+0.762 
+ 
+javascript 
+67 
+0.73 
+0.90 [0.58, 1.40] 
+0.808 
+ 
+data analysis 
+574 
+0.62 
+0.82 [0.69, 0.98] 
+0.106 
+ 
+spss 
+58 
+0.49 
+0.82 [0.51, 1.30] 
+0.590 
+ 
+finance 
+57 
+1.19 
+0.80 [0.48, 1.30] 
+0.555 
+ 
+data analyst 
+51 
+0.40 
+0.79 [0.47, 1.32] 
+0.555 
+ 
+pig 
+61 
+1.00 
+0.78 [0.49, 1.25] 
+0.486 
+ 
+data management 
+89 
+0.45 
+0.76 [0.52, 1.11] 
+0.338 
+ 
+consulting 
+57 
+0.47 
+0.76 [0.47, 1.21] 
+0.444 
+ 
+power bi 
+72 
+0.48 
+0.75 [0.49, 1.15] 
+0.380 
+ 
+ssis 
+58 
+0.32 
+0.72 [0.44, 1.19] 
+0.388 
+ 
+data scientist 
+68 
+1.38 
+0.67 [0.43, 1.07] 
+0.266 
+ 
+outsourcing 
+63 
+0.24 
+0.62 [0.41, 0.95] 
+0.106 
+ 
+excel 
+262 
+0.36 
+0.60 [0.47, 0.76] 
+0.001 
+yes 
+business process 
+52 
+0.27 
+0.57 [0.36, 0.91] 
+0.092 
+yes 
+mis 
+78 
+0.07 
+0.15 [0.10, 0.25] 
+0.000 
+yes 
+ 
+E. SAS Viya for Learners implementation 
+1. Upload sas_data_role_postings.csv, sas_ds_jobs.csv, sas_jds.csv and 
+sas_sds.csv (exported by the pipeline) to SAS Viya for Learners and load them into 
+CAS. 
+2. SAS Visual Analytics report, page 1 (Market): salary band by experience heat map; title 
+ladder; top listed skills with role-family and city filters. 
+3. Page 2 (Bridge): Listed vs Paid vs Rewarded table and chart, with a crosswalk-version 
+selector. 
+4. Page 3 (Skill Investment Card): five slider parameters for self-ratings, a role-family 
+selector and the ranked output with intervals. 
+5. SAS Model Studio: one pipeline each for JDS (target salary_hike_high_or_low) and SDS 
+(target success) with logistic regression, decision tree, forest and gradient boosting on 5-
+fold partitions; compare AUC with the Python results (agreement within ±0.03 expected). 
+ 
+NOTE: SAS VIYA REQUIRES BUSSINESS EMAIL SO WE COULD NOT VALIDATE 
+IT WITH SAS VIYA: 
+ 
+
+
+=== PAGE 29 ===
+ 
+29 
+F. Code and reproducibility 
+pipeline_v1.py (cleaning and assertions), verify_methods.py (known-answer tests), 
+prep.py (analysis tables and SAS exports), market.py (Section 4.1), people.py (Sections 
+4.2 and 4.4), bridge_card.py and card.py (Sections 4.3 and 4.5), audit_effects.py 
+(Table 6), figures.py (all figures, each saved with its data). Every run prints the SHA-256 
+hashes of the four raw files. 
+G. Supporting tables 
+Table 26. Largest fresher-friendly employers in Data Science Jobs (minimum experience 0–1 years). 
+Company 
+Title 
+Min. exp (yrs) 
+Avg salary 
+(LPA) 
+Postings 
+Accenture 
+Business Analyst 
+1 
+7.0 
+1,900 
+Genpact 
+Business Analyst 
+1 
+6.4 
+1,700 
+TCS 
+Data Analyst 
+1 
+4.7 
+1,600 
+Cognizant 
+Data Analyst 
+1 
+5.5 
+1,200 
+Cognizant 
+Business Analyst 
+1 
+8.6 
+1,100 
+Accenture 
+Data Analyst 
+1 
+5.2 
+1,100 
+Deloitte 
+Business Analyst 
+1 
+7.8 
+991 
+TCS 
+Data Engineer 
+1 
+5.8 
+819 
+ 
+Table 27. Most frequent skill pairs among the top 30 skills (data-role postings). Lift above 1 means the pair 
+appears together more than chance. 
+Skill pair 
+Postings listing both 
+Lift (observed ÷ expected) 
+machine learning + python 
+313 
+3.1 
+python + r 
+248 
+2.4 
+machine learning + r 
+238 
+2.3 
+r + sas 
+224 
+2.2 
+analytics + sas 
+181 
+1.9 
+python + sql 
+177 
+1.5 
+hadoop + spark 
+128 
+7.7 
+hadoop + hive 
+114 
+9.1 
+machine learning + nlp 
+113 
+4.0 
+ 
+
+
+=== PAGE 30 ===
+ 
+30 
+Table 28. Proportional-odds check: odds ratio of reaching at least each band (separate binary logits, full 
+controls). 
+Skill area 
+≥ 3–6 LPA 
+≥ 6–10 LPA 
+≥ 10–15 LPA 
+≥ 15–25 LPA 
+≥ 25–50 LPA 
+Coding 
+3.13 
+2.01 
+1.26 
+1.19 
+1.14 
+Big data 
+1.49 
+1.81 
+1.42 
+1.29 
+1.18 
+Maths & stats 
+1.98 
+1.43 
+1.26 
+1.26 
+0.67 
+AI / ML 
+2.23 
+0.94 
+1.15 
+1.28 
+1.50 
+Dashboard & storytelling 
+0.43 
+0.59 
+0.74 
+0.80 
+0.75 
+Table 29. Calibration of cross-validated junior predictions. 
+Predicted probability (quintile) 
+Mean predicted 
+Observed high-hike share 
+Juniors 
+Lowest 
+0.02 
+0.11 
+28 
+Second 
+0.22 
+0.07 
+28 
+Middle 
+0.61 
+0.67 
+27 
+Fourth 
+0.88 
+0.89 
+28 
+Highest 
+0.95 
+0.89 
+28 
+ 
+
+
